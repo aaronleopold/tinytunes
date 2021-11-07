@@ -1,6 +1,6 @@
 {
   "package": {
-    "productName": "mm",
+    "productName": "TinyTunes",
     "version": "0.1.0"
   },
   "build": {
@@ -57,7 +57,7 @@
     },
     "windows": [
       {
-        "title": "app",
+        "title": "Tiny Tunes",
         "width": 400,
         "height": 500,
         "resizable": false,

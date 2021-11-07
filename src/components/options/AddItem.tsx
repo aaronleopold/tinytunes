@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import useToggle from '../../hooks/useToggle';
 import Button from '../ui/Button';
@@ -8,16 +8,9 @@ import urlRegex from 'url-regex';
 import { parse } from 'querystring';
 
 const AddItem: React.FC = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [input, setInput] = useState('');
   const [open, { on, off }] = useToggle(false);
-
-  useKeyboardHandler([
-    {
-      key: 'n',
-      modifier: 'metaKey',
-      callback: on
-    }
-  ]);
 
   const parseUrl = (url: string) => {
     //No string provided
@@ -50,6 +43,22 @@ const AddItem: React.FC = () => {
     // TODO: invoke tauri api
   };
 
+  const openModal = () => {
+    // manually doing this to get the focus styles because of the wry bug
+    // (i'm not just crazy).
+    // see here => https://github.com/tauri-apps/wry/issues/406
+    buttonRef.current?.focus();
+    on();
+  };
+
+  useKeyboardHandler([
+    {
+      key: 'n',
+      modifier: 'metaKey',
+      callback: openModal
+    }
+  ]);
+
   return (
     <>
       <Modal title="Add YouTube Item" open={open} onClose={off}>
@@ -71,7 +80,12 @@ const AddItem: React.FC = () => {
         </Modal.Footer>
       </Modal>
 
-      <Button onClick={on} variant="tiny" className="px-2 py-1 rounded-md">
+      <Button
+        ref={buttonRef}
+        onClick={openModal}
+        variant="tiny"
+        className="px-2 py-1 rounded-md"
+      >
         Add
       </Button>
     </>

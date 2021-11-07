@@ -4,19 +4,19 @@ use anyhow::Result;
 use sea_orm::{ConnectionTrait, Database, DatabaseBackend, DatabaseConnection, Statement};
 use std::io::Read;
 
-fn create_mm_folder() -> Result<PathBuf> {
+fn create_app_folder() -> Result<PathBuf> {
   let home_dir = dirs::home_dir().ok_or(anyhow::anyhow!("Could not find home directory"))?;
-  let db_dir = home_dir.join(".mm");
+  let db_dir = home_dir.join(".tinytunes");
   std::fs::create_dir_all(&db_dir)?;
   Ok(db_dir)
 }
 
 fn create_db_file() -> Result<String> {
-  let mm_folder = create_mm_folder()?;
+  let app_folder = create_app_folder()?;
 
   let db_file = format!(
     "sqlite:{}?mode=rwc",
-    mm_folder.join("mm.db").to_str().unwrap()
+    app_folder.join("tinytunes.db").to_str().unwrap()
   );
 
   Ok(db_file)

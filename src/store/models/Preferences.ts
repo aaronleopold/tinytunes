@@ -44,6 +44,7 @@ export const windowSizeSelections = [
   }
 ];
 
+// TODO: make theme configurable
 export const Preferences = types
   .model({
     width: types.number,

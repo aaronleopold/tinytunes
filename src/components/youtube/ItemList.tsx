@@ -3,11 +3,13 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { useNavigate } from 'react-router';
+import { YouTubeItem } from '../../@types/store';
 
 import useKeyboard from '../../hooks/useKeyboard';
 import { useMst } from '../../store/store';
 import ContextMenu from '../ContextMenu';
 import Text, { SubText } from '../ui/Text';
+import EmptyListMessage from './EmptyListMessage';
 
 let items = [
   {
@@ -36,17 +38,12 @@ let items = [
   }
 ];
 
-interface ItemProps {
+interface ItemProps extends YouTubeItem {
   onClick: React.MouseEventHandler<HTMLDivElement>;
   onDoubleClick: React.MouseEventHandler<HTMLDivElement>;
 
   even: boolean;
   selected: boolean;
-
-  id: number;
-  name: string;
-  yt_id: string;
-  is_stream: boolean;
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -61,9 +58,12 @@ const Item: React.FC<ItemProps> = ({
     <ContextMenuTrigger id={String(id)}>
       <div
         className={clsx(
-          even ? 'bg-gray-50 dark:bg-trout-900' : 'bg-trout-800',
-          { 'border border-blue-500': selected },
-          'p-2 rounded-md'
+          even
+            ? 'bg-gray-50 dark:bg-trout-900'
+            : 'bg-gray-100 dark:bg-trout-800',
+          { 'border-blue-500': selected },
+          { 'border-transparent': !selected },
+          'p-2 rounded-md border'
         )}
         {...props}
       >
@@ -126,6 +126,8 @@ const ItemList = observer(() => {
     }
   };
 
+  const handleDeleteItem = (item: YouTubeItem) => {};
+
   useEffect(() => {
     selectedRef.current = selected;
   }, [selected]);
@@ -141,6 +143,8 @@ const ItemList = observer(() => {
   // TODO: double click to edit? right click context menu?
   return (
     <div className="w-full flex flex-col space-y-1">
+      {items.length === 0 && <EmptyListMessage />}
+
       {items.map((item, i) => {
         return (
           <>
@@ -153,7 +157,13 @@ const ItemList = observer(() => {
               {...item}
             />
 
-            <ContextMenu id={item.id} onShow={() => handleShowContextMenu(i)} />
+            <ContextMenu
+              key={String(item.id + '-menu')}
+              id={item.id}
+              onShow={() => handleShowContextMenu(i)}
+              onDelete={() => handleDeleteItem(item)}
+              onEdit={() => alert('TODO')}
+            />
           </>
         );
       })}

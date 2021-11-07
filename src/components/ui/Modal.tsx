@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import useKeyboard from '../../hooks/useKeyboard';
 import clsx from 'clsx';
@@ -39,7 +39,7 @@ export default function Modal({
         initialFocus={initialFocus}
         onClose={onClose}
       >
-        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -49,7 +49,7 @@ export default function Modal({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0-safe bg-gray-500 bg-opacity-75 transition-opacity rounded-b-xl overflow-hidden" />
+            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity rounded-b-xl overflow-hidden" />
           </Transition.Child>
 
           <span
@@ -70,10 +70,10 @@ export default function Modal({
             <div
               className={clsx(
                 modalSize,
-                'inline-block align-bottom bg-white dark:bg-theme-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full sm:p-6'
+                'inline-block align-bottom bg-white dark:bg-trout-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-full sm:p-6'
               )}
             >
-              <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <div className="text-left px-4 py-4">
                 <Dialog.Title
                   as="h3"
                   className="text-lg leading-6 font-medium text-gray-900 dark:text-gray-50"
@@ -101,7 +101,7 @@ function ModalContent({ children, flex }: ModalContentProps) {
       className={clsx(
         flex === 'col' && 'flex flex-col space-y-4',
         flex === 'row' && 'flex flex-row space-x-4',
-        'py-2 text-center sm:mt-0 sm:ml-4 sm:text-left leading-relaxed'
+        'px-4 text-left leading-relaxed'
       )}
     >
       {children}
@@ -114,7 +114,7 @@ interface ModalFooterProps {
 }
 
 function ModalFooter({ children }: ModalFooterProps) {
-  return <div className="mt-4 flex flex-row-reverse">{children}</div>;
+  return <div className="p-4 flex space-x-2 justify-end">{children}</div>;
 }
 
 Modal.Body = ModalContent;

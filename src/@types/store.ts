@@ -2,7 +2,7 @@ export interface YouTubeItem {
   id: number;
   name: string;
   yt_id: string;
-  is_dir: boolean;
+  is_stream: boolean;
 }
 
 export interface UserPreferences {

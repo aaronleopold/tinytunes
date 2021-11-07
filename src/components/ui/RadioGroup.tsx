@@ -87,7 +87,7 @@ export default function ({
                       as="span"
                       className={clsx(
                         checked
-                          ? 'text-blue-600 dark:text-blue-300'
+                          ? 'text-blue-600 dark:text-blue-200'
                           : 'text-gray-500 dark:text-gray-400',
                         'block text-sm'
                       )}

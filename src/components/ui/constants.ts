@@ -1,4 +1,6 @@
 export const FOCUS_STYLE = `
+focus:outline-none
+
 focus:ring-2 
 focus:ring-offset-2
 focus:ring-blue-500
@@ -102,11 +104,7 @@ export const INPUT_VARIANTS = {
   default: `
     shadow-sm    
     bg-white
-    border-gray-200
-
-    hover:border-gray-300
-
-    focus:border-gray-100
+    border-transparent
 
     placeholder-gray-400
 

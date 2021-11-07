@@ -23,7 +23,6 @@ const Settings = observer(() => {
     });
   }, [userPreferences.width, userPreferences.height]);
 
-  // // TODO: type this
   const handleChangeSize = async (key: string) => {
     const { height, width } = WINDOW_SIZES[key];
 

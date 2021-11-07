@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 // storing user preferences this simplistic in a db seems rather silly,
 // but I just really want to use rust as much as I can lol
 
+// TODO: make theme configurable
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Serialize, Deserialize)]
 #[sea_orm(table_name = "user_preferences")]
 pub struct Model {

@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = () => {
         <HeaderNavigation />
       </HeaderItem>
       <HeaderItem className="justify-center col-span-4">
-        <Heading>Tray Tunes</Heading>
+        <Heading>Tiny Tunes</Heading>
       </HeaderItem>
       <HeaderItem className="justify-end col-span-1">
         <NavigationButton to="settings" variant="tiny" className="rounded-md">

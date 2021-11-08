@@ -8,9 +8,11 @@ export interface YouTubeItem {
 export interface UserPreferences {
   height: number;
   width: number;
+  dark_theme: boolean;
+  download_directory?: string;
 }
 
 export interface HydrateReturn {
   items: YouTubeItem[];
-  preferences: UserPreferences;
+  userPreferences: UserPreferences;
 }

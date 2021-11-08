@@ -17,12 +17,12 @@ export const Provider: React.FC<DefaultProps> = ({ children }) => {
 
   useEffect(() => {
     const hydrate = async () => {
-      let hydration = await invoke('hydrate')
+      let hydration = await invoke<HydrateReturn>('hydrate')
         .then(data => data)
         .catch(err => console.log(err));
 
       if (hydration) {
-        applySnapshot(rootStore, hydration as HydrateReturn);
+        applySnapshot(rootStore, hydration);
       }
 
       setLoaded(true);

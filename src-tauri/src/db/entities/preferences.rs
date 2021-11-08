@@ -12,6 +12,8 @@ pub struct Model {
   pub id: i32,
   pub height: i32,
   pub width: i32,
+  pub dark_theme: bool,
+  pub download_directory: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

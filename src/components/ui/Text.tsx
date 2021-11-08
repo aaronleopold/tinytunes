@@ -42,7 +42,11 @@ export default function Text({
 // TODO: this is not good lol
 export function SubText({ children, ...props }: TextProps) {
   return (
-    <Text size="xs" className="text-gray-600 dark:text-gray-400" {...props}>
+    <Text
+      size="xs"
+      className="text-gray-600 dark:text-gray-400 truncate"
+      {...props}
+    >
       {children}
     </Text>
   );

@@ -1,10 +1,15 @@
 import { CaretLeft, CaretRight } from 'phosphor-react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
 import Button from './ui/Button';
 
 const HeaderNavigation: React.FC = () => {
+  // const stack = useRef<Stack<string>>(new Stack());
+
+  const [history, setHistory] = useState<string[]>(['/']);
+  const [position, setPosition] = useState<number>(0);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,19 +22,34 @@ const HeaderNavigation: React.FC = () => {
   }, [location]);
 
   const canNavigationBackward = useCallback(() => {
-    return location.pathname === '/settings';
-  }, [location]);
+    // return location.pathname !== '/';
+    // return position !== 0;
+    return true;
+  }, [location, position, history]);
 
   // FIXME: these are not really correct
   // I need to use history somehow here
   const navigateForward = () => {
-    // history.forward();
-    navigate('/settings');
+    // navigate(history[position + 1]);
   };
 
   const navigateBackward = () => {
     navigate('..');
   };
+
+  // TODO: figure this out
+  // useEffect(() => {
+  //   let index = history.indexOf(location.pathname);
+
+  //   if (index === -1) {
+  //     setPosition(pos => pos + 1);
+  //     setHistory([...history, location.pathname]);
+  //   } else if (position !== 0) {
+  //     setPosition(pos => pos - 1);
+  //   }
+  // }, [location]);
+
+  console.log({ history, position });
 
   return (
     <span className="relative z-0 inline-flex shadow-sm rounded-md">

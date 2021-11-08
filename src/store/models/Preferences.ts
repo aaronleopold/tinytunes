@@ -48,7 +48,9 @@ export const windowSizeSelections = [
 export const Preferences = types
   .model({
     width: types.number,
-    height: types.number
+    height: types.number,
+    dark_theme: types.boolean,
+    download_directory: types.optional(types.string, '')
   })
   .actions(self => ({
     runInAction(fn: () => any) {

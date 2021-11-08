@@ -33,7 +33,7 @@ export default forwardRef<HTMLButtonElement, ButtonProps>(
       { 'p-2 rounded-full': circle },
       { 'rounded-md': !circle && variant !== 'tiny' },
       fullWidth && 'w-full min-w-0 text-center justify-center',
-      { 'opacity-5': loading },
+      { 'opacity-75': loading },
       'shadow-sm relative inline-flex items-center border text-sm leading-5 font-medium transition-colors ease-in-out duration-200 focus:outline-none',
       variantStyle,
       size,
@@ -50,7 +50,12 @@ export default forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? (
           <span className="flex items-center justify-center mx-auto">
-            <Loader size="sm" inline active={loading} />
+            <Loader
+              size="xs"
+              inline
+              active={loading}
+              containerClassName="mr-2"
+            />
             {children}
           </span>
         ) : (

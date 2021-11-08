@@ -24,7 +24,9 @@ export default function Input({
     <div className={clsx({ 'min-w-0 flex-1 w-full': fullWidth })}>
       {label && <Label>{label}</Label>}
       {description && (
-        <SubText className={clsx({ 'mt-1': label })}>{description}</SubText>
+        <SubText italic className={clsx({ 'mt-1': label })}>
+          {description}
+        </SubText>
       )}
       <div
         className={clsx(

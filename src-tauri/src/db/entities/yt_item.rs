@@ -6,7 +6,8 @@ use serde::{Deserialize, Serialize};
 pub struct Model {
   #[sea_orm(primary_key)]
   pub id: i32,
-  pub name: String,  // defaults to New Playlist or New Stream (frontend)
+  pub name: String, // defaults to New Playlist or New Stream (frontend)
+  #[sea_orm(unique)]
   pub yt_id: String, // correlates to playlistId or videoId params on YouTube.com
   pub is_stream: bool,
 }

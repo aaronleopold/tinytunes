@@ -11,7 +11,7 @@ dark:ring-offset-trout-900
 
 export const BUTTON_VARIANTS = {
   default: `
-    bg-gray-50
+    bg-whtie
     border-gray-300
     text-gray-700
 
@@ -65,8 +65,9 @@ export const BUTTON_VARIANTS = {
     p-0.5 
 
     border border-gray-300
-    bg-gray-100 
-    hover:bg-gray-200
+    bg-white 
+    hover:bg-gray-100
+    shadow-sm
 
     dark:border-trout-700
     dark:bg-trout-800
@@ -104,7 +105,8 @@ export const INPUT_VARIANTS = {
   default: `
     shadow-sm    
     bg-white
-    border-transparent
+    border-gray-200
+    dark:border-transparent
 
     placeholder-gray-400
 

@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 export const LOADER_SIZES = {
   tiny: 'h-3 w-3',
+  xs: 'h-4 w-4',
   sm: 'h-5 w-5',
   md: 'h-8 w-8',
   lg: 'h-24 w-24',
@@ -10,6 +11,7 @@ export const LOADER_SIZES = {
 };
 
 interface LoaderProps {
+  containerClassName?: string;
   active?: boolean;
   size?: keyof typeof LOADER_SIZES;
   inline?: boolean;
@@ -17,7 +19,12 @@ interface LoaderProps {
 
 // TODO: color prop
 
-export default function Loader({ inline, active, size = 'md' }: LoaderProps) {
+export default function Loader({
+  inline,
+  active,
+  size = 'md',
+  containerClassName
+}: LoaderProps) {
   const SIZE = LOADER_SIZES[size] ?? LOADER_SIZES.md;
 
   if (!active) return null;
@@ -26,7 +33,8 @@ export default function Loader({ inline, active, size = 'md' }: LoaderProps) {
     <div
       className={clsx(
         inline ? 'mx-auto' : 'absolute bottom-0 inset-0',
-        'flex items-center justify-center pointer-events-none'
+        'flex items-center justify-center pointer-events-none',
+        containerClassName
       )}
     >
       <svg

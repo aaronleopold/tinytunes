@@ -3,20 +3,25 @@
   windows_subsystem = "windows"
 )]
 
+mod app;
 mod commands;
 mod db;
 
-use std::io::Read;
+use app::menu;
 
 use futures::executor::block_on;
 use tauri::api::path::{resolve_path, BaseDirectory};
 use tauri::{
-  CustomMenuItem, LogicalSize, PhysicalPosition, Position, SystemTray, SystemTrayMenu,
-  SystemTrayMenuItem,
+  CustomMenuItem, LogicalSize, Manager, PhysicalPosition, Position, SystemTray, SystemTrayEvent,
+  SystemTrayMenu, SystemTrayMenuItem,
 };
-use tauri::{Manager, SystemTrayEvent};
 
 fn main() {
+  env_logger::builder()
+    .filter_level(log::LevelFilter::Debug)
+    .is_test(true)
+    .init();
+
   let context = tauri::generate_context!();
 
   let migrations_folder = resolve_path(
@@ -102,11 +107,15 @@ fn main() {
       }
     })
     .invoke_handler(tauri::generate_handler![
+      commands::get_user_audiodir,
       commands::resize_window,
-      commands::test_connection,
+      commands::set_dark_theme,
       commands::hydrate,
-      commands::get_yt_items
+      commands::get_yt_items,
+      commands::insert_yt_item,
+      commands::delete_yt_item,
     ])
+    .menu(menu::get_menu())
     .run(context)
     .expect("error while running tauri application");
 }

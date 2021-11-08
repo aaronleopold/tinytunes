@@ -31,3 +31,5 @@ target/
 WixTools
 
 .env
+
+*.log

@@ -6,8 +6,10 @@ import React, {
   useRef,
   useState
 } from 'react';
+import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import { useMst } from '../../store/store';
 import Controls from './Controls';
+import getRandomGif from './gifs';
 import PlayingInfo from './PlayingInfo';
 
 interface PlayerProps {
@@ -20,26 +22,18 @@ interface CurrentlyPlaying {
   videoId: string;
 }
 
+// TODO: remove these logs, keeping for now to make sure I'm not rerendering too much
 export default observer<PlayerProps>(({ index }) => {
-  const { items } = useMst();
+  const { items, playerInfo } = useMst();
+
   const item = items[index];
 
-  const [player, createPlayer] = useState<YT.Player | undefined>();
+  const [player, setPlayer] = useState<YT.Player | null>(null);
   const playerRef = useRef(player);
 
-  const [playing, setPlaying] = useState(false);
+  const [gif, setGif] = useState<string>();
 
-  const [current, setCurrent] = useState<CurrentlyPlaying>();
-
-  const currentRef = useRef(current);
-
-  const showPlayingInfo = useMemo(
-    () => !!player && !!current,
-    [player, current]
-  );
-  const showControls = useMemo(() => !!player, [player]);
-
-  function onPlayerReady(e: any) {
+  const onPlayerReady = (e: YT.PlayerEvent) => {
     if (!item.is_stream) {
       e.target.loadPlaylist({
         list: item.yt_id,
@@ -49,119 +43,165 @@ export default observer<PlayerProps>(({ index }) => {
         suggestedQuality: 'small'
       });
     }
-  }
+  };
 
-  function onPlayerStateChange(e: any) {
-    const { videoUrl } = e.target.playerInfo;
-    const { title, video_id } = e.target.playerInfo.videoData;
+  const onPlayerStateChange = useCallback(
+    (e: any) => {
+      console.log('state changed');
 
-    const currentlyPlaying = e.target.getPlayerState() === 1;
+      const { videoUrl } = e.target.playerInfo;
+      const { title, video_id } = e.target.playerInfo.videoData;
 
-    if (currentlyPlaying !== playing) {
-      setPlaying(currentlyPlaying);
-    }
+      if (playerInfo.title !== title) {
+        console.log('update triggered from state change');
+        playerInfo.set({ title, videoUrl, videoId: video_id });
+      }
+    },
+    [playerInfo]
+  );
 
-    if (
-      currentRef.current?.title !== title ||
-      currentRef.current?.videoId !== video_id
-    ) {
-      setCurrent({ title, videoUrl, videoId: video_id });
-    }
-  }
+  const createPlaylistPlayer = () => {
+    // @ts-ignore
+    return new YT.Player('player', {
+      height: '300',
+      width: '300',
+      playerVars: {
+        controls: '0'
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange
+      }
+    });
+  };
 
-  // Updating the reference to the player state, so the
-  // useEffect hook underneath can properly clean up
+  const createVideoPlayer = () => {
+    // @ts-ignore
+    return new YT.Player('player', {
+      height: '300',
+      width: '300',
+      videoId: item.yt_id,
+      playerVars: {
+        controls: '0',
+        autoplay: '1'
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange
+      }
+    });
+  };
+
   useEffect(() => {
-    playerRef.current = player;
-    currentRef.current = current;
-  }, [player, current]);
+    if (playerRef.current !== player) {
+      playerRef.current = player;
+    }
+  }, [player]);
+
+  useEffect(() => {
+    async function getGif() {
+      setGif(await getRandomGif());
+    }
+
+    if (playerInfo.title) {
+      getGif();
+    }
+  }, [playerInfo.title]);
 
   useEffect(() => {
     if (!player) {
       if (item.is_stream) {
-        createPlayer(
-          // @ts-ignore
-          new YT.Player('player', {
-            height: '300',
-            width: '300',
-            videoId: item.yt_id,
-            playerVars: {
-              controls: '0',
-              autoplay: '1'
-            },
-            events: {
-              onReady: onPlayerReady,
-              onStateChange: onPlayerStateChange
-            }
-          })
-        );
+        setPlayer(createVideoPlayer());
       } else {
-        createPlayer(
-          // @ts-ignore
-          new YT.Player('player', {
-            height: '300',
-            width: '300',
-            playerVars: {
-              controls: '0'
-            },
-            events: {
-              onReady: onPlayerReady,
-              onStateChange: onPlayerStateChange
-            }
-          })
-        );
+        setPlayer(createPlaylistPlayer());
       }
 
-      setPlaying(true);
+      playerInfo.setIsPlaying(true);
     }
 
-    // on the unmount, I will eventually want to store the
-    // players current position in the playlist. This cleanup
-    // function will get the current playtime and playlist index
-    // to be used in reinitializing the player object next time
-    // this playlist is selected
-    // TODO
     return () => {
-      if (playerRef.current) {
-        const timePlayed = playerRef.current.getCurrentTime();
-        const playlistIndex = playerRef.current.getPlaylistIndex();
-      }
+      playerInfo.reset();
     };
   }, []);
 
   const play = () => {
     playerRef.current?.playVideo();
-    setPlaying(true);
+    // there seems to be about a 200ms delay, this could just be my machine so
+    // TODO: test this delay on other machines.
+    setTimeout(() => playerInfo.setIsPlaying(true), 200);
   };
 
   const pause = () => {
     playerRef.current?.pauseVideo();
-    setPlaying(false);
+    setTimeout(() => playerInfo.setIsPlaying(false), 200);
   };
 
-  const skip = () => {
-    playerRef.current?.nextVideo();
-  };
-
-  const replay = () => {
-    if (!playerRef.current) return;
-
-    if (item.is_stream || playerRef.current?.getCurrentTime() > 5) {
-      playerRef.current?.seekTo(0, true);
+  const togglePlay = useCallback(() => {
+    if (playerInfo.isPlaying) {
+      pause();
     } else {
-      playerRef.current?.previousVideo();
+      play();
     }
-  };
+  }, [playerInfo.isPlaying]);
+
+  const skip = item.is_stream
+    ? undefined
+    : () => {
+        playerRef.current?.nextVideo();
+      };
+
+  const replay = item.is_stream
+    ? undefined
+    : () => {
+        if (!playerRef.current) return;
+
+        if (item.is_stream || playerRef.current?.getCurrentTime() > 5) {
+          playerRef.current?.seekTo(0, true);
+        } else {
+          playerRef.current?.previousVideo();
+        }
+      };
+
+  const showGif = useMemo(() => !!gif, [gif]);
+  const showControls = useMemo(() => !!player, [player]);
+
+  useKeyboardHandler([
+    {
+      key: 'ArrowRight',
+      callback: skip
+    },
+    {
+      key: 'ArrowLeft',
+      callback: replay
+    },
+    {
+      key: ' ',
+      callback: togglePlay
+    }
+  ]);
 
   return (
-    <div>
+    <div className="relative h-full w-full overflow-hidden">
       <div id="player" className="hidden" />
 
-      {showPlayingInfo && <PlayingInfo {...current!} />}
+      {playerInfo.title && (
+        <PlayingInfo
+          title={playerInfo.title}
+          videoUrl={playerInfo.videoUrl}
+          videoId={playerInfo.videoId}
+        />
+      )}
+
+      {showGif && (
+        <img
+          className="border-none absolute object-cover w-screen h-full"
+          src={gif}
+        />
+      )}
 
       {showControls && (
         <Controls
-          playing={playing}
+          playing={playerInfo.isPlaying}
           onPlay={play}
           onPause={pause}
           onSkip={skip}

@@ -29,3 +29,5 @@ build/
 # will have compiled files and executables
 target/
 WixTools
+
+.env

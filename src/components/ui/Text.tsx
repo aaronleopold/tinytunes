@@ -44,7 +44,7 @@ export function SubText({ children, ...props }: TextProps) {
   return (
     <Text
       size="xs"
-      className="text-gray-600 dark:text-gray-400 truncate"
+      className="text-gray-600 dark:text-gray-400 truncate select-text"
       {...props}
     >
       {children}

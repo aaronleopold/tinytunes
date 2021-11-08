@@ -4,7 +4,7 @@ import ItemList from '../components/youtube/ItemList';
 
 const Home: React.FC = () => {
   return (
-    <div className="h-full">
+    <div className="h-full p-3">
       <ListOptions />
 
       <ItemList />

@@ -13,8 +13,10 @@ const PlayingInfo: React.FC<PlayingInfoProps> = ({
   videoId
 }) => {
   return (
-    <div className="flex flex-col space-y-2 text-center">
-      <Heading>{title}</Heading>
+    <div className="absolute inset-0 mt-6 flex flex-col space-y-2 text-center z-50">
+      <Heading className="select-text" variant="player">
+        {title}
+      </Heading>
     </div>
   );
 };

@@ -34,8 +34,6 @@ const AddItem: React.FC = () => {
     // no params
     if (parts.length <= 1) return null;
 
-    // I am assuming the first...
-    // TODO: refactor to a regex maybe? Or should I let it be naive?
     const queryString = parts[1];
 
     return parse(queryString);

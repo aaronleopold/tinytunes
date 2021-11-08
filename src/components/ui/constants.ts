@@ -119,3 +119,16 @@ export const INPUT_VARIANTS = {
     dark:text-white
   `
 };
+
+export const HEADER_VARIANTS = {
+  default: `
+    font-medium
+  `,
+
+  player: `
+    font-semibold
+    text-xl
+
+    text-shadow-xl
+  `
+};

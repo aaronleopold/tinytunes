@@ -11,33 +11,6 @@ import ContextMenu from '../ContextMenu';
 import Text, { SubText } from '../ui/Text';
 import EmptyListMessage from './EmptyListMessage';
 
-// let items = [
-//   {
-//     id: 0,
-//     name: 'Lofi & Neat Mixes 🎧',
-//     yt_id: 'PLm5pKYShxnXB1g2LixFdKxjAvl3P2O4Hm',
-//     is_stream: false
-//   },
-//   {
-//     id: 1,
-//     name: 'Lofi for Writing 🤔',
-//     yt_id: 'PLSkGho4yZH-Cz7cGg-mY103vl5g-lZSci',
-//     is_stream: false
-//   },
-//   {
-//     id: 2,
-//     name: 'ChilledCow 🐮',
-//     yt_id: '5qap5aO4i9A',
-//     is_stream: true
-//   },
-//   {
-//     id: 3,
-//     name: 'Lofi Christmas Radio 🎄',
-//     yt_id: 'knTSObLVUao',
-//     is_stream: true
-//   }
-// ];
-
 interface ItemProps extends YouTubeItem {
   onClick: React.MouseEventHandler<HTMLDivElement>;
   onDoubleClick: React.MouseEventHandler<HTMLDivElement>;
@@ -64,11 +37,11 @@ const Item: React.FC<ItemProps> = ({
             : 'bg-gray-100 dark:bg-trout-800',
           { 'border-blue-500': selected },
           { 'border-transparent': !selected },
-          'p-2 rounded-md border select-text'
+          'p-2 rounded-md border'
         )}
         {...props}
       >
-        <Text>{name}</Text>
+        <Text className="cursor-default">{name}</Text>
         <SubText>
           {is_stream ? 'Video' : 'Playlist'} ∙ {yt_id}
         </SubText>

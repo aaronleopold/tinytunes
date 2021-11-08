@@ -35,7 +35,7 @@ const Settings = observer(() => {
   };
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4 p-3">
       <RadioGroup
         groupLabel="Window Size"
         items={windowSizeSelections}

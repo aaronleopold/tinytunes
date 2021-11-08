@@ -28,7 +28,10 @@ interface ControlButtonProps {
 
 const ControlButton: React.FC<ControlButtonProps> = ({ action, ...props }) => (
   <button onClick={action}>
-    <props.icon className="w-8 h-8 text-white" />
+    <props.icon
+      weight="fill"
+      className="w-8 h-8 text-white font-medium text-shadow-xl"
+    />
   </button>
 );
 
@@ -40,7 +43,7 @@ const Controls: React.FC<ControlsProps> = ({
   onSkip
 }) => {
   return (
-    <div className="absolute inset-x-0 bottom-0  py-2">
+    <div className="absolute inset-x-0 bottom-0  py-2 z-50">
       <div className="flex space-x-4 justify-center items-center pb-2 text-white text-shadow-lg">
         {onReplay && <ControlButton action={onReplay} icon={SkipBack} />}
 

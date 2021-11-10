@@ -53,16 +53,7 @@
       "active": false
     },
     "allowlist": {
-      "all": false,
-      "shell": {
-        "execute": false,
-        "open": false
-      },
-      "fs": {
-        "readBinaryFile": true,
-        "readTextFile": true,
-        "writeFile": true
-      }
+      "all": false
     },
     "windows": [
       {

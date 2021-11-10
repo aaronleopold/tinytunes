@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import { useMst } from '../../store/store';
+import Loader from '../ui/Loader';
 import Controls from './Controls';
 import getRandomGif from './gifs';
 import PlayingInfo from './PlayingInfo';
@@ -23,7 +24,7 @@ interface CurrentlyPlaying {
 }
 
 // TODO: remove these logs, keeping for now to make sure I'm not rerendering too much
-export default observer<PlayerProps>(({ index }) => {
+const Player: React.FC<PlayerProps> = ({ index }) => {
   const { items, playerInfo } = useMst();
 
   const item = items[index];
@@ -32,6 +33,7 @@ export default observer<PlayerProps>(({ index }) => {
   const playerRef = useRef(player);
 
   const [gif, setGif] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const onPlayerReady = (e: YT.PlayerEvent) => {
     if (!item.is_stream) {
@@ -47,18 +49,22 @@ export default observer<PlayerProps>(({ index }) => {
 
   const onPlayerStateChange = useCallback(
     (e: any) => {
-      console.log('state changed');
+      console.log('state changed:', e);
 
-      const { videoUrl } = e.target.playerInfo;
+      const { videoUrl, duration } = e.target.playerInfo;
       const { title, video_id } = e.target.playerInfo.videoData;
 
-      if (playerInfo.title !== title) {
+      if (playerInfo.title !== title || playerInfo.duration !== duration) {
         console.log('update triggered from state change');
-        playerInfo.set({ title, videoUrl, videoId: video_id });
+        playerInfo.set({ title, videoUrl, videoId: video_id, duration });
       }
     },
     [playerInfo]
   );
+
+  const onPlayerError = (e: any) => {
+    console.log('player error:', e);
+  };
 
   const createPlaylistPlayer = () => {
     // @ts-ignore
@@ -87,7 +93,8 @@ export default observer<PlayerProps>(({ index }) => {
       },
       events: {
         onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError
       }
     });
   };
@@ -117,12 +124,38 @@ export default observer<PlayerProps>(({ index }) => {
       }
 
       playerInfo.setIsPlaying(true);
+
+      if (loading) {
+        setTimeout(() => setLoading(false), 200);
+      }
     }
 
     return () => {
       playerInfo.reset();
     };
   }, []);
+
+  /**
+   *
+   * @param value 0-100
+   */
+  const setVolume = (value: number) => {
+    playerRef.current?.setVolume(value);
+  };
+
+  const reduceVolume = () => {
+    if (playerRef.current) {
+      const volume = playerRef.current.getVolume();
+      setVolume(volume - 5);
+    }
+  };
+
+  const increaseVolume = () => {
+    if (playerRef.current) {
+      const volume = playerRef.current.getVolume();
+      setVolume(volume + 5);
+    }
+  };
 
   const play = () => {
     playerRef.current?.playVideo();
@@ -162,7 +195,7 @@ export default observer<PlayerProps>(({ index }) => {
         }
       };
 
-  const showGif = useMemo(() => !!gif, [gif]);
+  const showGif = useMemo(() => !!gif && !loading, [gif, loading]);
   const showControls = useMemo(() => !!player, [player]);
 
   useKeyboardHandler([
@@ -173,6 +206,14 @@ export default observer<PlayerProps>(({ index }) => {
     {
       key: 'ArrowLeft',
       callback: replay
+    },
+    {
+      key: 'ArrowUp',
+      callback: increaseVolume
+    },
+    {
+      key: 'ArrowDown',
+      callback: reduceVolume
     },
     {
       key: ' ',
@@ -192,6 +233,8 @@ export default observer<PlayerProps>(({ index }) => {
         />
       )}
 
+      <Loader active={loading} />
+
       {showGif && (
         <img
           className="border-none absolute object-cover w-screen h-full"
@@ -206,8 +249,11 @@ export default observer<PlayerProps>(({ index }) => {
           onPause={pause}
           onSkip={skip}
           onReplay={replay}
+          setVolume={setVolume}
         />
       )}
     </div>
   );
-});
+};
+
+export default observer(Player);

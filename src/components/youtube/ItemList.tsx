@@ -5,7 +5,7 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import { useNavigate } from 'react-router';
 
 import { YouTubeItem } from '../../@types/store';
-import useKeyboard from '../../hooks/useKeyboard';
+import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import { useMst } from '../../store/store';
 import ContextMenu from '../ContextMenu';
 import Text, { SubText } from '../ui/Text';
@@ -113,16 +113,15 @@ const ItemList = observer(() => {
     selectedRef.current = selected;
   }, [selected]);
 
-  useKeyboard('Escape', () => {
-    setSelected(null);
-  });
-  useKeyboard('Enter', goTo);
-
-  useKeyboard('ArrowUp', traverseUp);
-  useKeyboard('ArrowDown', traverseDown);
+  useKeyboardHandler([
+    { key: 'Escape', callback: () => setSelected(null) },
+    { key: 'Enter', callback: goTo },
+    { key: 'ArrowUp', callback: traverseUp },
+    { key: 'ArrowDown', callback: traverseDown }
+  ]);
 
   return (
-    <div className="w-full flex flex-col space-y-1">
+    <div className="w-full flex flex-col space-y-1 pb-3">
       {items.length === 0 && <EmptyListMessage />}
 
       {items.map((item, i) => {

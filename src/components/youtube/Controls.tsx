@@ -1,5 +1,6 @@
 import { Pause, Play, SkipBack, SkipForward } from 'phosphor-react';
 import React from 'react';
+import ProgressBar from './ProgressBar';
 
 // playing={playing}
 // onPlay={() => {
@@ -19,6 +20,7 @@ interface ControlsProps {
   onPause: () => void;
   onSkip?: () => void;
   onReplay?: () => void;
+  setVolume: (volume: number) => void;
 }
 
 interface ControlButtonProps {
@@ -54,6 +56,8 @@ const Controls: React.FC<ControlsProps> = ({
 
         {onSkip && <ControlButton action={onSkip} icon={SkipForward} />}
       </div>
+
+      <ProgressBar />
     </div>
   );
 };

@@ -87,7 +87,7 @@ const Controls: React.FC<ControlsProps> = ({
 
   return (
     <div className="absolute inset-x-0 bottom-0 py-2 z-50">
-      <div className="grid grid-cols-6 justify-center items-center mx-2">
+      <div className="grid grid-cols-6 justify-center items-center w-[90%] mx-auto">
         <GifChanger getNewGif={getNewGif} />
 
         <div className="flex col-span-4 space-x-4 justify-center items-center pb-2 text-white text-shadow-lg">

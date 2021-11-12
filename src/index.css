@@ -38,3 +38,31 @@ code {
     bottom: 0;
   }
 }
+
+input[type='range'] {
+  -webkit-appearance: none;
+
+  @apply h-1 bg-transparent;
+  /* background: rgba(255, 255, 255, 0.6); */
+  border-radius: 5px;
+  /* background-image: linear-gradient(
+    rgba(249, 250, 251, 1),
+    rgba(249, 250, 251, 1)
+  ); */
+  background-size: 70% 100%;
+  background-repeat: no-repeat;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  @apply h-2 w-2 rounded-full bg-white;
+  box-shadow: 0 0 2px 0 #121212;
+  transition: background 0.3s ease-in-out;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}

@@ -100,7 +100,8 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
   };
 
   const getGif = async () => {
-    setGif(await getRandomGif());
+    const newGif = await getRandomGif();
+    setGif(newGif);
   };
 
   useEffect(() => {

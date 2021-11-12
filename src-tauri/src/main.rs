@@ -7,6 +7,8 @@ mod app;
 mod commands;
 mod db;
 
+use std::process::exit;
+
 use app::menu;
 
 use futures::executor::block_on;
@@ -53,7 +55,7 @@ fn main() {
   tauri::Builder::default()
     .setup(move |app| {
       // FIXME: this causes some bugs
-      // app.set_activation_policy(tauri::ActivationPolicy::Accessory);
+      app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 
       let window_size = LogicalSize {
         width: preferences.width as f64,
@@ -76,7 +78,8 @@ fn main() {
 
         let window = app.get_window("main").unwrap();
 
-        // logical position was not working
+        // TODO: this is wrong on windows and other OS's that have
+        // taskbars on the bottom of the screen
         let tray_pos = PhysicalPosition {
           x: position.x as i32,
           y: position.y as i32,
@@ -101,6 +104,9 @@ fn main() {
         ..
       } => {
         println!("system tray received a right click");
+        println!("Going to exit since the menu is not working properly :weary:");
+
+        app.get_window("main").unwrap().close().unwrap();
       }
       _ => {
         println!("Some other event happend??");

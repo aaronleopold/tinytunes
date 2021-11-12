@@ -16,6 +16,8 @@ TODO: DEMO HERE
   - [ ] persist sort order
 - [x] play video/playlist on double click (like, yknow, the main feature)
   - [x] add relevant keybinds (see [list of keybinds](#available-keybinds))
+  - [x] add progress bar
+    - [x] make progress bar seekable (click to seek)
 - [ ] volume control
 - [ ] allow user to download playlists/videos (using youtube-dl, ffmpeg, etc)
   - [ ] implement in rust? that could be fun

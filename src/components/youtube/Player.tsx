@@ -9,7 +9,7 @@ import React, {
 import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import { useMst } from '../../store/store';
 import Loader from '../ui/Loader';
-import Controls from './Controls';
+import Controls from './controls/Controls';
 import getRandomGif from './gifs';
 import PlayingInfo from './PlayingInfo';
 
@@ -99,6 +99,10 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
     });
   };
 
+  const getGif = async () => {
+    setGif(await getRandomGif());
+  };
+
   useEffect(() => {
     if (playerRef.current !== player) {
       playerRef.current = player;
@@ -106,10 +110,6 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
   }, [player]);
 
   useEffect(() => {
-    async function getGif() {
-      setGif(await getRandomGif());
-    }
-
     if (playerInfo.title) {
       getGif();
     }
@@ -195,6 +195,10 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
         }
       };
 
+  const seekTo = (value: number) => {
+    playerRef.current?.seekTo(value, true);
+  };
+
   const showGif = useMemo(() => !!gif && !loading, [gif, loading]);
   const showControls = useMemo(() => !!player, [player]);
 
@@ -250,6 +254,8 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
           onSkip={skip}
           onReplay={replay}
           setVolume={setVolume}
+          seekTo={seekTo}
+          getNewGif={getGif}
         />
       )}
     </div>

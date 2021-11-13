@@ -1,7 +1,7 @@
 import { Download, NotePencil, TrashSimple } from 'phosphor-react';
 import React from 'react';
 import { ContextMenu as Menu, MenuItem } from 'react-contextmenu';
-import Text from './ui/Text';
+import Text from '../ui/Text';
 
 interface ContextMenuProps {
   id: number;

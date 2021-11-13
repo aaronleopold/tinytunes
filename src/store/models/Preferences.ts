@@ -53,14 +53,6 @@ export const Preferences = types
     download_directory: types.optional(types.string, '')
   })
   .actions(self => ({
-    runInAction(fn: () => any) {
-      return fn();
-    },
-    async runInActionAsync(fn: () => any) {
-      return fn();
-    }
-  }))
-  .actions(self => ({
     setWindowSize(width: number, height: number) {
       self.width = width;
       self.height = height;

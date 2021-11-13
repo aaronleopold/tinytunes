@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router';
 import { YouTubeItem } from '../../@types/store';
 import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import { useMst } from '../../store/store';
-import ContextMenu from '../ContextMenu';
+import ContextMenu from './ContextMenu';
 import Text, { SubText } from '../ui/Text';
 import EmptyListMessage from './EmptyListMessage';
+import EditItem from '../options/EditItem';
 
 interface ItemProps extends YouTubeItem {
   onClick: React.MouseEventHandler<HTMLDivElement>;
@@ -52,12 +53,13 @@ const Item: React.FC<ItemProps> = ({
 
 // TODO: is it worth virtualizing this?
 const ItemList = observer(() => {
-  const { items } = useMst();
   const navigate = useNavigate();
+  const { items } = useMst();
 
   const [selected, setSelected] = useState<number | null>(null);
-
   const selectedRef = useRef(selected);
+
+  const [editing, setEditing] = useState<boolean>(false);
 
   // confusing name convention but this will traverse up while decrementing
   // the position down
@@ -109,6 +111,15 @@ const ItemList = observer(() => {
     alert('TODO');
   };
 
+  const handleEditItem = (index?: number) => {
+    if (index !== undefined) {
+      setSelected(index);
+      setEditing(true);
+    } else {
+      setEditing(true);
+    }
+  };
+
   useEffect(() => {
     selectedRef.current = selected;
   }, [selected]);
@@ -116,38 +127,46 @@ const ItemList = observer(() => {
   useKeyboardHandler([
     { key: 'Escape', callback: () => setSelected(null) },
     { key: 'Enter', callback: goTo },
+    { key: 'e', modifier: 'metaKey', callback: handleEditItem },
     { key: 'ArrowUp', callback: traverseUp },
     { key: 'ArrowDown', callback: traverseDown }
   ]);
 
   return (
-    <div className="w-full flex flex-col space-y-1 pb-3">
-      {items.length === 0 && <EmptyListMessage />}
+    <>
+      <EditItem
+        open={editing}
+        selected={selected}
+        onClose={() => setEditing(false)}
+      />
 
-      {items.map((item, i) => {
-        return (
-          <>
-            <Item
-              onClick={() => setSelected(i)}
-              onDoubleClick={() => goTo(i)}
-              key={item.id}
-              selected={selected === i}
-              even={i % 2 === 0}
-              {...item}
-            />
+      <div className="w-full flex flex-col space-y-1 pb-3">
+        {items.length === 0 && <EmptyListMessage />}
 
-            <ContextMenu
-              key={String(item.id + '-menu')}
-              id={item.id}
-              onShow={() => handleShowContextMenu(i)}
-              onDelete={() => handleDeleteItem(item)}
-              onDownload={() => handleDownloadItem(item)}
-              onEdit={() => alert('TODO')}
-            />
-          </>
-        );
-      })}
-    </div>
+        {items.map((item, i) => {
+          return (
+            <React.Fragment key={item.id}>
+              <Item
+                onClick={() => setSelected(i)}
+                onDoubleClick={() => goTo(i)}
+                selected={selected === i}
+                even={i % 2 === 0}
+                {...item}
+              />
+
+              <ContextMenu
+                key={String(item.id + '-menu')}
+                id={item.id}
+                onShow={() => handleShowContextMenu(i)}
+                onDelete={() => handleDeleteItem(item)}
+                onDownload={() => handleDownloadItem(item)}
+                onEdit={() => handleEditItem(i)}
+              />
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </>
   );
 });
 

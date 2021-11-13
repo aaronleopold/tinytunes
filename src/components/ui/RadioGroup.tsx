@@ -28,7 +28,7 @@ export default function ({
       <div
         className={clsx(
           groupLabel && 'mt-1',
-          'bg-white dark:bg-trout-800 dark:text-gray-50 rounded-md -space-y-px'
+          'dark:text-gray-50 rounded-md space-y-2'
         )}
       >
         {items.map(({ label, sublabel, value }, idx) => (
@@ -37,12 +37,10 @@ export default function ({
             value={value}
             className={({ checked }) =>
               clsx(
-                idx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
-                idx === items.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
                 checked
-                  ? 'bg-blue-50 dark:bg-blue-700 dark:border-blue-600 border-blue-100 z-10'
+                  ? 'border-transparent ring-2 ring-blue-700 z-10'
                   : 'border-gray-200 dark:border-trout-700',
-                'relative border p-4 flex cursor-pointer focus:outline-none'
+                'bg-white dark:bg-trout-800 rounded-md relative border p-4 flex cursor-pointer focus:outline-none'
               )
             }
           >

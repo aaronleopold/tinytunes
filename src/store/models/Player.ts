@@ -13,7 +13,8 @@ const Player = types
     title: types.optional(types.string, ''),
     videoUrl: types.optional(types.string, ''),
     videoId: types.optional(types.string, ''),
-    duration: types.optional(types.number, 0)
+    duration: types.optional(types.number, 0),
+    volume: types.optional(types.number, 1)
   })
   .actions(self => ({
     setIsPlaying(isPlaying: boolean) {
@@ -30,6 +31,9 @@ const Player = types
     },
     setDuration(duration: number) {
       self.duration = duration;
+    },
+    setVolume(volume: number) {
+      self.volume = volume;
     },
     equals(info: SetInfo) {
       return (

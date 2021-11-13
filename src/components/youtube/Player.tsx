@@ -71,6 +71,7 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
     return new YT.Player('player', {
       height: '300',
       width: '300',
+      volume: playerInfo.volume * 100,
       playerVars: {
         controls: '0'
       },
@@ -87,6 +88,7 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
       height: '300',
       width: '300',
       videoId: item.yt_id,
+      volume: playerInfo.volume * 100,
       playerVars: {
         controls: '0',
         autoplay: '1'
@@ -135,6 +137,12 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
       playerInfo.reset();
     };
   }, []);
+
+  useEffect(() => {
+    if (playerRef.current && playerInfo.volume <= 1) {
+      playerRef.current.setVolume(playerInfo.volume * 100);
+    }
+  }, [playerInfo.volume]);
 
   /**
    *

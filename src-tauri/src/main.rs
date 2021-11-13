@@ -7,8 +7,6 @@ mod app;
 mod commands;
 mod db;
 
-use std::process::exit;
-
 use app::menu;
 
 use futures::executor::block_on;
@@ -54,7 +52,6 @@ fn main() {
 
   tauri::Builder::default()
     .setup(move |app| {
-      // FIXME: this causes some bugs
       app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 
       let window_size = LogicalSize {

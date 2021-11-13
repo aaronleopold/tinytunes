@@ -43,12 +43,7 @@ input[type='range'] {
   -webkit-appearance: none;
 
   @apply h-1 bg-transparent;
-  /* background: rgba(255, 255, 255, 0.6); */
   border-radius: 5px;
-  /* background-image: linear-gradient(
-    rgba(249, 250, 251, 1),
-    rgba(249, 250, 251, 1)
-  ); */
   background-size: 70% 100%;
   background-repeat: no-repeat;
 }

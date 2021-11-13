@@ -1,12 +1,21 @@
-import { SpeakerHigh } from 'phosphor-react';
+import { observer } from 'mobx-react-lite';
+import { SpeakerHigh, SpeakerLow, SpeakerNone } from 'phosphor-react';
 import React, { useMemo } from 'react';
+import { useMst } from '../../../store/store';
 
 interface VolumeProps {}
 
-interface VolumeSliderProps {}
+interface VolumeSliderProps {
+  volume: number;
+  setVolume: (volume: number) => void;
+}
 
-const VolumeSlider: React.FC<VolumeSliderProps> = () => {
-  const [volume, setVolume] = React.useState(0.5);
+const VolumeSlider: React.FC<VolumeSliderProps> = ({ volume, setVolume }) => {
+  const handleVolumeChange = (value: number) => {
+    if (value <= 1 && value >= 0) {
+      setVolume(value);
+    }
+  };
 
   const volumePercentage = useMemo(() => {
     return volume * 100;
@@ -21,7 +30,7 @@ const VolumeSlider: React.FC<VolumeSliderProps> = () => {
         max="1"
         step="0.01"
         value={volume}
-        onChange={e => setVolume(parseFloat(e.target.value))}
+        onChange={e => handleVolumeChange(parseFloat(e.target.value))}
       />
 
       <div
@@ -33,14 +42,30 @@ const VolumeSlider: React.FC<VolumeSliderProps> = () => {
 };
 
 const Volume: React.FC<VolumeProps> = () => {
+  const { playerInfo } = useMst();
+
+  const renderSpeaker = () => {
+    const className = 'text-white text-shadow-md h-4 w-4';
+    if (playerInfo.volume > 0.75) {
+      return <SpeakerHigh className={className} />;
+    } else if (playerInfo.volume > 0) {
+      return <SpeakerLow className={className} />;
+    } else {
+      return <SpeakerNone className={className} />;
+    }
+  };
+
   return (
     <div className="flex justify-end col-span-1 relative">
       <div className="flex justify-center items-center space-x-2">
-        <SpeakerHigh className="text-white text-shadow-md h-4 w-4" />
-        <VolumeSlider />
+        {renderSpeaker()}
+        <VolumeSlider
+          volume={playerInfo.volume}
+          setVolume={playerInfo.setVolume}
+        />
       </div>
     </div>
   );
 };
 
-export default Volume;
+export default observer(Volume);

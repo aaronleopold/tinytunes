@@ -1,8 +1,6 @@
 use anyhow::Result;
-use std::{
-  io::{BufRead, BufReader},
-  process::{Command, Stdio},
-};
+
+use tauri::api::process::Command;
 
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -34,12 +32,12 @@ impl YoutubeDl {
   }
 
   pub fn check_installations(&self) -> Result<String> {
-    Command::new("youtube-dl")
+    std::process::Command::new("youtube-dl")
       .arg("--version")
       .output()
       .map_err(|e| anyhow::anyhow!("youtube-dl not installed: {}", e))?;
 
-    Command::new("ffmpeg")
+    std::process::Command::new("ffmpeg")
       .arg("-version")
       .output()
       .map_err(|e| anyhow::anyhow!("ffmpeg not installed: {}", e))?;
@@ -47,35 +45,39 @@ impl YoutubeDl {
     Ok("youtube-dl and ffmpeg installed".to_string())
   }
 
-  pub fn run(&self) -> Result<String> {
-    self.download()?;
-    Ok("Finished".to_owned())
+  fn get_playlist_command(&self) -> Command {
+    Command::new("youtube-dl").args(vec![
+      "--extract-audio",
+      "--audio-format",
+      "mp3",
+      "-o",
+      format!(
+        "{}/{}/%(title)s.%(ext)s",
+        self.out_dir.clone(),
+        self.name.to_owned().unwrap()
+      )
+      .as_str(),
+      format!("https://www.youtube.com/playlist?list={}", self.id).as_str(),
+    ])
   }
 
-  pub fn get_child(&self) -> Command {
-    let mut child = Command::new("youtube-dl");
+  fn get_video_command(&self) -> Command {
+    Command::new("youtube-dl").args(vec![
+      "--extract-audio",
+      "--audio-format",
+      "mp3",
+      "-o",
+      format!("{}/%(title)s.%(ext)s", self.out_dir.clone()).as_str(),
+      format!("https://www.youtube.com/watch?v={}", self.id).as_str(),
+    ])
+  }
 
-    child
-      .arg("--extract-audio")
-      .arg("--audio-format")
-      .arg("mp3")
-      .arg("-o");
-
+  pub fn get_command(&self) -> Command {
     if self.is_playlist {
-      child
-        .arg(format!(
-          "{}/{}/%(title)s.%(ext)s",
-          self.out_dir,
-          self.name.to_owned().unwrap()
-        ))
-        .arg(format!("https://www.youtube.com/playlist?list={}", self.id));
+      return self.get_playlist_command();
     } else {
-      child
-        .arg(format!("{}/%(title)s.%(ext)s", self.out_dir))
-        .arg(format!("https://www.youtube.com/watch?v={}", self.id));
+      return self.get_video_command();
     }
-
-    child
   }
 
   pub fn should_emit_output(&self, line: &str) -> bool {
@@ -90,56 +92,5 @@ impl YoutubeDl {
     // video downloads don't seem to push new lines to stdout on progress updates,
     // which is really unfortunate. Not sure how I will track progress for downloading videos
     // becaues of this.
-  }
-
-  pub fn download(&self) -> Result<()> {
-    self.check_installations()?;
-
-    let mut child = self.get_child();
-
-    let stdout = child
-      .stdout(Stdio::piped())
-      .spawn()?
-      .stdout
-      .ok_or_else(|| anyhow::anyhow!("youtube-dl failed"))?;
-
-    let reader = BufReader::new(stdout);
-
-    reader.lines().for_each(|line| {
-      let text = line.unwrap();
-      println!("{}", text);
-      if self.should_emit_output(&text) {
-        println!("{}", text);
-      }
-    });
-
-    Ok(())
-  }
-}
-
-#[cfg(test)]
-mod tests {
-  #[test]
-  fn test_playlist() {
-    let ydl = super::YoutubeDl::new(
-      "/Users/aaronleopold/Music/testing_tunes".to_string(),
-      Some("Chill Lofi".to_string()),
-      "PLm5pKYShxnXB1g2LixFdKxjAvl3P2O4Hm".to_string(),
-      true,
-    );
-
-    ydl.run().unwrap();
-  }
-
-  #[test]
-  fn test_video() {
-    let ydl = super::YoutubeDl::new(
-      "/Users/aaronleopold/Music/testing_tunes".to_string(),
-      None,
-      "_ITiwPMUzho".to_string(),
-      false,
-    );
-
-    ydl.run().unwrap();
   }
 }

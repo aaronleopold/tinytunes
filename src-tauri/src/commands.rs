@@ -6,12 +6,16 @@ use sea_orm::{
   sea_query::Expr, ColumnTrait, DatabaseConnection, EntityTrait, Order, QueryFilter, QueryOrder,
   Set,
 };
-use std::{
-  io::{BufRead, BufReader},
-  process::{ChildStdout, Command, Stdio},
-};
+// use std::{
+//   io::{BufRead, BufReader},
+//   process::{ChildStdout, Command, Stdio},
+// };
 
-use tauri::{LogicalSize, Manager};
+use tauri::window;
+use tauri::{
+  api::process::{Command, CommandEvent},
+  LogicalSize, Manager,
+};
 
 pub static DB_INSTANCE: OnceCell<DatabaseConnection> = OnceCell::new();
 
@@ -135,7 +139,7 @@ pub fn get_user_audiodir() -> Result<String, String> {
   }
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn download_yt_item(
   app_handle: tauri::AppHandle,
   out_dir: String,
@@ -147,27 +151,23 @@ pub fn download_yt_item(
 
   ytdl.check_installations().map_err(|e| e.to_string())?;
 
-  let mut child = ytdl.get_child();
+  let command = ytdl.get_command();
 
-  // FIXME: this needs to be a separate thread, so it doesn't completely block
-  // tauri
-  let stdout = child
-    .stdout(Stdio::piped())
-    .spawn()
-    .map_err(|e| e.to_string())?
-    .stdout
-    .ok_or_else(|| anyhow::anyhow!("youtube-dl failed"))
-    .map_err(|e| e.to_string())?;
+  let window = app_handle.get_window("main").unwrap();
 
-  let reader = BufReader::new(stdout);
+  tauri::async_runtime::spawn(async move {
+    let (mut rx, mut _child) = command.spawn().expect("Failed to spawn command");
 
-  reader.lines().for_each(|line| {
-    let text = line.unwrap();
-
-    if ytdl.should_emit_output(&text) {
-      app_handle
-        .emit_all("ytdl_output", &text)
-        .unwrap_or_default();
+    while let Some(event) = rx.recv().await {
+      if let CommandEvent::Stdout(line) = event {
+        // FIXME: can I merge the two if statements?
+        println!("{}", line);
+        if ytdl.should_emit_output(&line) {
+          window
+            .emit_all("ytdl_output", &line)
+            .expect("failed to emit event");
+        }
+      }
     }
   });
 

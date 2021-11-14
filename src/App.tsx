@@ -17,6 +17,8 @@ function App() {
       });
     }
 
+    init_listeners();
+
     return () => {
       if (unlisten_ytdl_output) {
         unlisten_ytdl_output();

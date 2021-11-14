@@ -4,6 +4,10 @@ Tunes in a tiny package! Play your favorite YouTube playlists and videos straigh
 
 TODO: DEMO HERE
 
+## Installation
+
+If you plan on using the downloading feature, you will need to have both `youtube-dl` and `ffmpeg` installed. Otherwise, simply select appropriate installer file for your operating system and enjoy!
+
 ## To-do
 
 - [x] new a name for the project (tiny tunes!?)
@@ -18,12 +22,14 @@ TODO: DEMO HERE
   - [x] add relevant keybinds (see [list of keybinds](#available-keybinds))
   - [x] add progress bar
     - [x] make progress bar seekable (click to seek)
-- [ ] volume control
+- [x] volume control
 - [ ] allow user to download playlists/videos (using youtube-dl, ffmpeg, etc)
-  - [ ] implement in rust? that could be fun
-    - [ ] shell execute true?? tauri.conf.json
-  - [x] add download location to preferences entity
-    - [x] add default on up migration (kinda done, not in migration file tho)
+  - [x] basic downloading
+  - [ ] prevent doubly downloading (i.e. if I am downloading something, I probably don't want the user to be able to download another??)
+    - this probably requires me to add some state on the tauri side of things
+  - [ ] actually do something with the emitted events from tauri (maybe a toolbar or something that has percentage downloaded??)
+- [x] add download location to preferences entity
+  - [x] add default on up migration (kinda done, not in migration file tho)
 
 ## Available Keybinds
 
@@ -31,14 +37,15 @@ _key actions marked with \* are currently NOT implemented_
 
 #### Home
 
-| Key                       | Action                                                                                                      |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| <kbd>⌘</kbd> <kbd>n</kbd> | Add a new YouTube playlist/video                                                                            |
-| <kbd>⌘</kbd> <kbd>s</kbd> | Sort the list view of playlists/videos                                                                      |
-| <kbd>⌘</kbd> <kbd>d</kbd> | Download the playlist/video to configured download location (default `~/Music/<playlist_or_video_name>`) \* |
-| <kbd>up</kbd>             | Traverse up the list of playlists/videos                                                                    |
-| <kbd>down</kbd>           | Traverse down the list of playlists/videos                                                                  |
-| <kbd>enter</kbd>          | Play selected item in list, persist an edit / change currently in progress                                  |
+| Key                       | Action                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| <kbd>⌘</kbd> <kbd>n</kbd> | Add a new YouTube playlist/video                                                                         |
+| <kbd>⌘</kbd> <kbd>s</kbd> | Sort the list view of playlists/videos                                                                   |
+| <kbd>⌘</kbd> <kbd>d</kbd> | Download the playlist/video to configured download location (default `~/Music/<playlist_or_video_name>`) |
+| <kbd>⌘</kbd> <kbd>e</kbd> | Edit currently selected item                                                                             |
+| <kbd>up</kbd>             | Traverse up the list of playlists/videos                                                                 |
+| <kbd>down</kbd>           | Traverse down the list of playlists/videos                                                               |
+| <kbd>enter</kbd>          | Play selected item in list, persist an edit / change currently in progress                               |
 
 #### Playing
 
@@ -46,6 +53,9 @@ _key actions marked with \* are currently NOT implemented_
 | ---------------- | -------------------------------------------------------------- |
 | <kbd>left</kbd>  | Seek backwards to beginning, or play previous song in playlist |
 | <kbd>right</kbd> | Play next song in playlist                                     |
+| <kbd>up</kbd>    | Increase volume                                                |
+| <kbd>down</kbd>  | Decrease Volume                                                |
+| <kbd>m</kbd>     | Mute Volume \*                                                 |
 | <kbd>space</kbd> | Toggle playing                                                 |
 
 ## Bugs / Issues

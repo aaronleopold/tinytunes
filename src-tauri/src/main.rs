@@ -6,6 +6,7 @@
 mod app;
 mod commands;
 mod db;
+mod youtube;
 
 use app::menu;
 
@@ -117,6 +118,7 @@ fn main() {
       commands::get_yt_items,
       commands::insert_yt_item,
       commands::delete_yt_item,
+      commands::download_yt_item
     ])
     .menu(menu::get_menu())
     .run(context)

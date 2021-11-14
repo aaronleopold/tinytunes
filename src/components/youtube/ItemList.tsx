@@ -11,6 +11,7 @@ import ContextMenu from './ContextMenu';
 import Text, { SubText } from '../ui/Text';
 import EmptyListMessage from './EmptyListMessage';
 import EditItem from '../options/EditItem';
+import { invoke } from '@tauri-apps/api';
 
 interface ItemProps extends YouTubeItem {
   onClick: React.MouseEventHandler<HTMLDivElement>;
@@ -54,7 +55,7 @@ const Item: React.FC<ItemProps> = ({
 // TODO: is it worth virtualizing this?
 const ItemList = observer(() => {
   const navigate = useNavigate();
-  const { items } = useMst();
+  const { items, userPreferences } = useMst();
 
   const [selected, setSelected] = useState<number | null>(null);
   const selectedRef = useRef(selected);
@@ -107,8 +108,24 @@ const ItemList = observer(() => {
     alert('TODO');
   };
 
-  const handleDownloadItem = (item: YouTubeItem) => {
-    alert('TODO');
+  const handleDownloadItem = (index?: number) => {
+    let item;
+    if (index !== undefined) {
+      item = items[index];
+    } else if (selectedRef.current !== null) {
+      item = items[selectedRef.current];
+    } else return;
+
+    const { name, yt_id, is_stream } = item;
+
+    invoke<string>('download_yt_item', {
+      id: yt_id,
+      name,
+      outDir: userPreferences.download_directory,
+      isPlaylist: !is_stream
+    })
+      .then(data => console.log(data))
+      .catch(err => console.error(err));
   };
 
   const handleEditItem = (index?: number) => {
@@ -128,6 +145,7 @@ const ItemList = observer(() => {
     { key: 'Escape', callback: () => setSelected(null) },
     { key: 'Enter', callback: goTo },
     { key: 'e', modifier: 'metaKey', callback: handleEditItem },
+    { key: 'd', modifier: 'metaKey', callback: handleDownloadItem },
     { key: 'ArrowUp', callback: traverseUp },
     { key: 'ArrowDown', callback: traverseDown }
   ]);
@@ -159,7 +177,7 @@ const ItemList = observer(() => {
                 id={item.id}
                 onShow={() => handleShowContextMenu(i)}
                 onDelete={() => handleDeleteItem(item)}
-                onDownload={() => handleDownloadItem(item)}
+                onDownload={() => handleDownloadItem(i)}
                 onEdit={() => handleEditItem(i)}
               />
             </React.Fragment>

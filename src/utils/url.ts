@@ -10,7 +10,7 @@ const parseYoutubeUrl = (url: string) => {
     return null;
   }
 
-  //No query string detected
+  // No query string detected
   if (!url.includes('?')) return null;
 
   const parts = url.split('?');

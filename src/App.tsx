@@ -6,14 +6,23 @@ import { Provider } from './store/store';
 import { listen } from '@tauri-apps/api/event';
 
 let unlisten_ytdl_output: () => void;
+let unlisten_ytdl_terminated: () => void;
 
 function App() {
+  // TODO: move this to separate file? I don't want to clutter my app component
+  // if I need more than this.
   useEffect(() => {
     async function init_listeners() {
       unlisten_ytdl_output = await listen<any>('ytdl_output', event => {
         // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
         // event.payload is the payload object
         console.log('RECIEVED EVENT:', event);
+      });
+
+      unlisten_ytdl_terminated = await listen<any>('ytdl_terminated', event => {
+        // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
+        // event.payload is the payload object
+        console.log('RECIEVED TERMINATED SIGNAL:', event);
       });
     }
 
@@ -22,6 +31,10 @@ function App() {
     return () => {
       if (unlisten_ytdl_output) {
         unlisten_ytdl_output();
+      }
+
+      if (unlisten_ytdl_terminated) {
+        unlisten_ytdl_terminated();
       }
     };
   }, []);

@@ -1,5 +1,10 @@
 import { observer } from 'mobx-react-lite';
-import { SpeakerHigh, SpeakerLow, SpeakerNone } from 'phosphor-react';
+import {
+  SpeakerHigh,
+  SpeakerLow,
+  SpeakerNone,
+  SpeakerSlash
+} from 'phosphor-react';
 import React, { useMemo } from 'react';
 import { useMst } from '../../../store/store';
 
@@ -46,7 +51,10 @@ const Volume: React.FC<VolumeProps> = () => {
 
   const renderSpeaker = () => {
     const className = 'text-white text-shadow-md h-4 w-4';
-    if (playerInfo.volume > 0.75) {
+
+    if (playerInfo.muted) {
+      return <SpeakerSlash className={className} />;
+    } else if (playerInfo.volume > 0.75) {
       return <SpeakerHigh className={className} />;
     } else if (playerInfo.volume > 0) {
       return <SpeakerLow className={className} />;
@@ -60,7 +68,7 @@ const Volume: React.FC<VolumeProps> = () => {
       <div className="flex justify-center items-center space-x-2">
         {renderSpeaker()}
         <VolumeSlider
-          volume={playerInfo.volume}
+          volume={playerInfo.muted ? 0 : playerInfo.volume}
           setVolume={playerInfo.setVolume}
         />
       </div>

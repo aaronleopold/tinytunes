@@ -167,6 +167,11 @@ pub fn download_yt_item(
             .emit_all("ytdl_output", &line)
             .expect("failed to emit event");
         }
+      } else if let CommandEvent::Terminated(status) = event {
+        println!("Command terminated with status: {:?}", status);
+        window
+          .emit_all("ytdl_done", &status)
+          .expect("failed to emit event");
       }
     }
   });

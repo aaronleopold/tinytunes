@@ -14,7 +14,8 @@ const Player = types
     videoUrl: types.optional(types.string, ''),
     videoId: types.optional(types.string, ''),
     duration: types.optional(types.number, 0),
-    volume: types.optional(types.number, 1)
+    volume: types.optional(types.number, 1),
+    muted: types.optional(types.boolean, false)
   })
   .actions(self => ({
     setIsPlaying(isPlaying: boolean) {
@@ -34,6 +35,12 @@ const Player = types
     },
     setVolume(volume: number) {
       self.volume = volume;
+    },
+    setMuted(muted: boolean) {
+      self.muted = muted;
+    },
+    toggleMuted() {
+      self.muted = !self.muted;
     },
     equals(info: SetInfo) {
       return (
@@ -57,6 +64,7 @@ const Player = types
       self.setVideoUrl('');
       self.setVideoId('');
       self.setDuration(0);
+      self.muted = false;
     }
   }));
 

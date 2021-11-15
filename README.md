@@ -34,7 +34,7 @@ _key actions marked with \* are currently NOT implemented_
 | <kbd>right</kbd> | Play next song in playlist                                     |
 | <kbd>up</kbd>    | Increase volume                                                |
 | <kbd>down</kbd>  | Decrease Volume                                                |
-| <kbd>m</kbd>     | Mute Volume \*                                                 |
+| <kbd>m</kbd>     | Mute/Unmute Volume                                             |
 | <kbd>space</kbd> | Toggle playing                                                 |
 
 ## To-do
@@ -56,7 +56,7 @@ _key actions marked with \* are currently NOT implemented_
   - [x] basic downloading
   - [ ] prevent doubly downloading (i.e. if I am downloading something, I probably don't want the user to be able to download another??)
     - this probably requires me to add some state on the tauri side of things
-  - [ ] capture thread close event?git
+  - [ ] capture thread close event?
   - [ ] actually do something with the emitted events from tauri (maybe a toolbar or something that has percentage downloaded??)
 - [x] add download location to preferences entity
   - [x] add default on up migration (kinda done, not in migration file tho)

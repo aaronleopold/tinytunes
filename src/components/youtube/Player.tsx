@@ -149,7 +149,19 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
    * @param value 0-100
    */
   const setVolume = (value: number) => {
+    const small = value / 100;
+    playerInfo.setVolume(small > 1 ? 1 : small);
     playerRef.current?.setVolume(value);
+  };
+
+  const toggleMute = () => {
+    if (playerInfo.muted) {
+      playerRef.current?.unMute();
+    } else {
+      playerRef.current?.mute();
+    }
+
+    playerInfo.toggleMuted();
   };
 
   const reduceVolume = () => {
@@ -161,8 +173,13 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
 
   const increaseVolume = () => {
     if (playerRef.current) {
-      const volume = playerRef.current.getVolume();
-      setVolume(volume + 5);
+      if (playerInfo.muted) {
+        setVolume(0);
+        toggleMute();
+      } else {
+        const volume = playerRef.current.getVolume();
+        setVolume(volume + 5);
+      }
     }
   };
 
@@ -231,6 +248,10 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
     {
       key: ' ',
       callback: togglePlay
+    },
+    {
+      key: 'm',
+      callback: toggleMute
     }
   ]);
 

@@ -5,10 +5,10 @@ import Routes from './pages/Routes';
 import { Provider } from './store/store';
 import { listen } from '@tauri-apps/api/event';
 
+let unlisten_ytdl_output: () => void;
+
 function App() {
   useEffect(() => {
-    let unlisten_ytdl_output: any;
-
     async function init_listeners() {
       unlisten_ytdl_output = await listen<any>('ytdl_output', event => {
         // event.event is the event name (useful if you want to use a single callback fn for multiple event types)

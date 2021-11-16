@@ -66,9 +66,10 @@ const getRandomGif = async () => {
     .get(`https://api.giphy.com/v1/gifs/${gif.id}?api_key=${API_KEY}`)
     .catch(err => err.response);
 
+  const randomFallbackIndex = Math.floor(Math.random() * fallbacks.length);
+  const fallback = fallbacks[randomFallbackIndex];
+
   if (response?.status !== 200) {
-    const randomFallbackIndex = Math.floor(Math.random() * fallbacks.length);
-    const fallback = fallbacks[randomFallbackIndex];
     return `/gifs/${fallback}`;
   }
 
@@ -77,10 +78,12 @@ const getRandomGif = async () => {
   // hate this >:(
   const imageData = data.data.images;
 
-  if (imageData.downsized_large) {
+  if (imageData?.downsized_large) {
     return imageData.downsized_large.url;
-  } else {
+  } else if (imageData?.original?.url) {
     return imageData.original.url;
+  } else {
+    return `/gifs/${fallback}`;
   }
 };
 

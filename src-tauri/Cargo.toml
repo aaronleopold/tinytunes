@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "TinyTunes"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
-default-run = "app"
+description = "A music app that lives in your menubar"
+authors = ["Aaron Leopold <https://www.aaronbleopold.com>"]
+license = "MIT"
+repository = "https://github.com/aaronleopold/tinytunes"
+default-run = "TinyTunes"
 edition = "2018"
 build = "src/build.rs"
 

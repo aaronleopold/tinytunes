@@ -37,12 +37,12 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
 
   const onPlayerReady = (e: YT.PlayerEvent) => {
     if (!item.is_stream) {
+      console.log('current quality:', e.target.getPlaybackQuality());
       e.target.loadPlaylist({
         list: item.yt_id,
         listType: 'playlist',
         index: 0,
-        startSeconds: 0,
-        suggestedQuality: 'small'
+        startSeconds: 0
       });
     }
   };
@@ -62,8 +62,22 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
     [playerInfo]
   );
 
+  const onQualityChange = (e: any) => {
+    console.log('quality changed:', e);
+  };
+
   const onPlayerError = (e: any) => {
-    console.log('player error:', e);
+    console.log('ERROR OCCURRED:', e);
+
+    console.log('DEBUG TEXT:', e.target.getDebugText());
+
+    console.log('PLAYBACK QUALITY:', e.target.getPlaybackQuality());
+
+    if (e.target.getPlaybackQuality() === 'unknown') {
+      console.log('AGH stinky bug!');
+    }
+
+    // e.target.
   };
 
   const createPlaylistPlayer = () => {
@@ -97,6 +111,7 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
       events: {
         onReady: onPlayerReady,
         onStateChange: onPlayerStateChange,
+        onPlaybackQualityChange: onQualityChange,
         onError: onPlayerError
       }
     });

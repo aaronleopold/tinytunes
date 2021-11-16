@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { GearSix } from 'phosphor-react';
 import React from 'react';
+import DownloadInfo from './youtube/download/DownloadInfo';
 
 import HeaderNavigation from './HeaderNavigation';
 import NavigationButton from './NavigationButton';
@@ -31,7 +32,9 @@ const Header: React.FC<HeaderProps> = () => {
       <HeaderItem className="justify-center col-span-4">
         <Heading>Tiny Tunes</Heading>
       </HeaderItem>
-      <HeaderItem className="justify-end col-span-1">
+      <HeaderItem className="justify-end col-span-1 space-x-1">
+        <DownloadInfo />
+
         <NavigationButton to="settings" variant="tiny" className="rounded-md">
           <GearSix className="w-4 h-4" />
         </NavigationButton>

@@ -55,7 +55,7 @@ const Item: React.FC<ItemProps> = ({
 // TODO: is it worth virtualizing this?
 const ItemList = observer(() => {
   const navigate = useNavigate();
-  const { items, userPreferences } = useMst();
+  const { items, userPreferences, downloadInfo } = useMst();
 
   const [selected, setSelected] = useState<number | null>(null);
   const selectedRef = useRef(selected);
@@ -108,7 +108,7 @@ const ItemList = observer(() => {
     alert('TODO');
   };
 
-  const handleDownloadItem = (index?: number) => {
+  const handleDownloadItem = async (index?: number) => {
     let item;
     if (index !== undefined) {
       item = items[index];
@@ -118,13 +118,16 @@ const ItemList = observer(() => {
 
     const { name, yt_id, is_stream } = item;
 
-    invoke<string>('download_yt_item', {
+    await invoke<string>('download_yt_item', {
       id: yt_id,
       name,
       outDir: userPreferences.download_directory,
       isPlaylist: !is_stream
     })
-      .then(data => console.log(data))
+      .then(() => {
+        downloadInfo.setDownloading(true);
+        downloadInfo.setCurrentName(name);
+      })
       .catch(err => console.error(err));
   };
 

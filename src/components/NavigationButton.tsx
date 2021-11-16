@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import Button, { ButtonProps } from './ui/Button';
 
-interface NavigationButtonProps extends Omit<ButtonProps, 'onClick'> {
+interface NavigationButtonProps extends Omit<ButtonProps, 'onClick' | 'ref'> {
   to: string;
 }
 

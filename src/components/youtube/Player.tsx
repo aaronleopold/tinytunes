@@ -77,7 +77,8 @@ const Player: React.FC<PlayerProps> = ({ index }) => {
       },
       events: {
         onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError
       }
     });
   };

@@ -67,7 +67,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
 
 // TODO: this config should be persisted so the user doesn't have to re-select
 // each application launch
-const SortConfig: React.FC = () => {
+export default function SortingConfig() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const onItemClick = (item: IDropdownItem) => {
@@ -125,6 +125,4 @@ const SortConfig: React.FC = () => {
       </Transition>
     </Menu>
   );
-};
-
-export default SortConfig;
+}

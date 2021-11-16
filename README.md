@@ -37,6 +37,22 @@ _key actions marked with \* are currently NOT implemented_
 | <kbd>m</kbd>     | Mute/Unmute Volume                                             |
 | <kbd>space</kbd> | Toggle playing                                                 |
 
+## Contributing
+
+Contributions are encouraged and welcome! Please open an issue prior to working on a bug or feature to let me know you're interested. Please be sure to refer to the [CONTRIBUTING.md](https://github.com/aaronleopold/tinytunes/blob/main//CONTRIBUTING.md) file for more information. Thanks!
+
+## Bugs / Issues
+
+Some of these are current limitations of Tauri, which are either current bugs of Tauri or features not yet available in Tauri. If you find a bug or would like to contribute, please open an issue to address it.
+
+- [ ] Fix positioning issues on Windows
+- [ ] Hide window on click away
+- [ ] Hide app handle (I can get this functional, however it introduces a weird amount of bugs. [Potential fix](https://github.com/tauri-apps/tauri/pull/2825))
+  - I can hide this in dev currently
+- [ ] Right click tray icon for menu (Creating a native menu overrides the event handling, causing the tray icon to not respond to left clicks)
+- [ ] Some videos completely break the app, not sure what causes it though. Compiling it with --debug flag, or running it in dev, removes the error completely, which makes it extremely hard to debug. I suspect it's something on YouTube's end not liking that I am accessing particular videos through their api without a key?
+  - related: if a video becomes unavailable, it will produce the same error. Unhiding the iframe will show the message 'This video/live stream recording is not available.'
+
 ## To-do
 
 - [x] new a name for the project (tiny tunes!?)
@@ -56,18 +72,8 @@ _key actions marked with \* are currently NOT implemented_
   - [x] basic downloading
   - [ ] prevent doubly downloading (i.e. if I am downloading something, I probably don't want the user to be able to download another??)
     - this probably requires me to add some state on the tauri side of things
-  - [ ] capture thread close event?
+  - [x] capture thread close event?
   - [ ] actually do something with the emitted events from tauri (maybe a toolbar or something that has percentage downloaded??)
+    - In progress!
 - [x] add download location to preferences entity
   - [x] add default on up migration (kinda done, not in migration file tho)
-
-## Bugs / Issues
-
-Some of these are current limitations of Tauri, which are either current bugs of Tauri or features not yet available in Tauri. If you find a bug or would like to contribute, please open an issue to address it.
-
-- [ ] Fix positioning issues on Windows
-- [ ] Hide window on click away
-- [x] Hide app handle (I can get this functional, however it introduces a weird amount of bugs. [Potential fix](https://github.com/tauri-apps/tauri/pull/2825))
-- [ ] Right click tray icon for menu (Creating a native menu overrides the event handling, causing the tray icon to not respond to left clicks)
-- [ ] Some videos completely break the app, not sure what causes it though. Compiling it with --debug flag, or running it in dev, removes the error completely, which makes it extremely hard to debug. I suspect it's something on YouTube's end not liking that I am accessing particular videos through their api without a key?
-  - related: if a video becomes unavailable, it will produce the same error. Unhiding the iframe will show the message 'This video/live stream recording is not available.'

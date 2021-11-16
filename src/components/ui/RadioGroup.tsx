@@ -61,7 +61,7 @@ export default function ({
                   <span
                     className={clsx(
                       checked
-                        ? 'bg-blue-100 dark:bg-blue-700'
+                        ? 'bg-blue-100 dark:bg-blue-300'
                         : 'bg-white dark:bg-trout-800',
                       'rounded-full w-1.5 h-1.5'
                     )}

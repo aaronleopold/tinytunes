@@ -1,4 +1,5 @@
 import { types } from 'mobx-state-tree';
+import { Downloader } from './Downloader';
 import Player from './Player';
 
 import { Preferences } from './Preferences';
@@ -10,7 +11,8 @@ export const RootModel = types
     userPreferences: types.optional(Preferences, () =>
       Preferences.create({ width: 400, height: 500, dark_theme: true })
     ),
-    playerInfo: types.optional(Player, () => Player.create({}))
+    playerInfo: types.optional(Player, () => Player.create({})),
+    downloadInfo: types.optional(Downloader, () => Downloader.create({}))
   })
   .actions(self => ({
     addItem(id: number, name: string, yt_id: string, is_stream: boolean) {

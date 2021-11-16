@@ -33,6 +33,10 @@ const Player = types
     setDuration(duration: number) {
       self.duration = duration;
     },
+    /**
+     *
+     * @param volume 0-1
+     */
     setVolume(volume: number) {
       self.volume = volume;
     },

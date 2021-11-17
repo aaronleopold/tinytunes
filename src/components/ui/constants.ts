@@ -109,6 +109,7 @@ export const INPUT_VARIANTS = {
     dark:border-transparent
 
     placeholder-gray-400
+    text-sm
 
     dark:bg-trout-800
     dark:border-trout-700

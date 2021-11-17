@@ -56,5 +56,11 @@ export const Preferences = types
     setWindowSize(width: number, height: number) {
       self.width = width;
       self.height = height;
+    },
+    setDownloadDirectory(dir: string) {
+      self.download_directory = dir;
+    },
+    toggleTheme() {
+      self.dark_theme = !self.dark_theme;
     }
   }));

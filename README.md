@@ -76,5 +76,3 @@ Some of these are current limitations of Tauri, which are either current bugs of
   - [x] capture thread close event?
   - [ ] actually do something with the emitted events from tauri (maybe a toolbar or something that has percentage downloaded??)
     - In progress!
-- [x] add download location to preferences entity
-  - [x] add default on up migration (kinda done, not in migration file tho)

@@ -96,6 +96,19 @@ pub async fn set_dark_theme(dark_theme: bool) -> Result<(), String> {
   Ok(())
 }
 
+#[tauri::command(async)]
+pub async fn set_download_directory(dir: String) -> Result<(), String> {
+  let db = db_instance().await.map_err(|e| e.to_string())?;
+
+  preferences::Entity::update_many()
+    .col_expr(preferences::Column::DownloadDirectory, Expr::value(dir))
+    .exec(db)
+    .await
+    .map_err(|e| e.to_string())?;
+
+  Ok(())
+}
+
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct HydrateReturn {
   items: Vec<yt_item::Model>,

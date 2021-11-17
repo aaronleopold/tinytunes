@@ -71,7 +71,7 @@ const EditItem: React.FC<EditItemProps> = ({ open, selected, onClose }) => {
   };
 
   return (
-    <Modal title="Add YouTube Item" open={open} onClose={onClose}>
+    <Modal title="Edit YouTube Item" open={open} onClose={onClose}>
       <Modal.Body>
         <form
           id="add-yt-item-form"
@@ -105,7 +105,7 @@ const EditItem: React.FC<EditItemProps> = ({ open, selected, onClose }) => {
           form="add-yt-item-form"
           variant="primary"
         >
-          Add
+          Save
         </Button>
       </Modal.Footer>
     </Modal>

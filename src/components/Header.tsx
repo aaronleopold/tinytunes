@@ -25,7 +25,7 @@ interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   return (
-    <nav className="w-full h-12 grid grid-cols-6 items-center  bg-trout-100 border text-gray-900 dark:text-auto dark:bg-trout-900 dark:border-trout-800 dark:shadow px-2">
+    <nav className="w-full h-12 grid grid-cols-6 items-center  bg-gray-100 border text-gray-900 dark:text-auto dark:bg-trout-900 dark:border-trout-800 dark:shadow px-2">
       <HeaderItem className="justify-start col-span-1">
         <HeaderNavigation />
       </HeaderItem>

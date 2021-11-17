@@ -5,10 +5,12 @@ import { FilePlus, FileText, Folder, FolderOpen } from 'phosphor-react';
 import pickFile from '../../utils/file';
 import { BUTTON_VARIANTS, INPUT_VARIANTS } from './constants';
 import Label from './Label';
+import { SubText } from './Text';
 
 type FilePickerProps = {
   dir?: boolean;
   label: string;
+  description?: string;
   placeholder?: string;
   extensions?: string[];
   onChange(buffer: any): void;
@@ -19,6 +21,7 @@ type FilePickerProps = {
 export default function FilePicker({
   dir,
   label,
+  description,
   placeholder,
   onChange,
   value,
@@ -36,7 +39,12 @@ export default function FilePicker({
   return (
     <div className={clsx(fullWidth && 'flex-1')}>
       <Label>{label}</Label>
-      <div className="mt-1 flex rounded-md shadow-sm">
+      {description && (
+        <SubText italic className={clsx({ 'mt-1': label })}>
+          {description}
+        </SubText>
+      )}
+      <div className="mt-1 flex rounded-md ">
         <div className="relative flex items-stretch flex-grow focus-within:z-10">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             {dir ? (

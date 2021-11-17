@@ -7,7 +7,8 @@
     "distDir": "../build",
     "devPath": "http://localhost:3000",
     "beforeDevCommand": "yarn start",
-    "beforeBuildCommand": "yarn build"
+    "beforeBuildCommand": "yarn build",
+    "withGlobalTauri": true
   },
   "tauri": {
     "systemTray": {
@@ -53,7 +54,12 @@
       "active": false
     },
     "allowlist": {
-      "all": false
+      "all": false,
+      "dialog": {
+        "all": false,
+        "open": true,
+        "save": false
+      }
     },
     "windows": [
       {

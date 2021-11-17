@@ -38,7 +38,7 @@ export default function ({
             className={({ checked }) =>
               clsx(
                 checked
-                  ? 'border-transparent ring-2 ring-blue-700 z-10'
+                  ? 'border-transparent ring-2 dark:ring-blue-700 ring-blue-500 z-10'
                   : 'border-gray-200 dark:border-trout-700',
                 'bg-white dark:bg-trout-800 rounded-md relative border p-4 flex cursor-pointer focus:outline-none'
               )

@@ -126,6 +126,7 @@ const AddItem: React.FC = () => {
               fullWidth
               label="Name"
               description="Enter a label for this item"
+              placeholder="Absolute Bangers"
               value={name}
               onChange={e => setName(e.target.value)}
             />
@@ -134,6 +135,7 @@ const AddItem: React.FC = () => {
               fullWidth
               label="YouTube Link"
               description="Enter the entire URL, we'll handle the rest"
+              placeholder="https://www.youtube.com/playlist?list=ID"
               value={ytInput}
               onChange={e => setYtInput(e.target.value)}
             />

@@ -1,6 +1,8 @@
 import { invoke } from '@tauri-apps/api';
 import { observer } from 'mobx-react-lite';
 import React, { useMemo } from 'react';
+import ThemeToggle from '../components/ThemeToggle';
+import FilePicker from '../components/ui/FIlePicker';
 import RadioGroup from '../components/ui/RadioGroup';
 import {
   windowSizeSelections,
@@ -34,8 +36,25 @@ const Settings = observer(() => {
       .catch(err => console.log('Could not resize window:', err));
   };
 
+  const handleChangeDownloadDir = async (buffer: string) => {
+    if (!buffer) return;
+
+    await invoke('set_download_directory', { dir: buffer })
+      .then(() => userPreferences.setDownloadDirectory(buffer))
+      .catch(err => console.log('Could not set download dir:', err));
+  };
+
   return (
     <div className="flex flex-col space-y-4 p-3">
+      <ThemeToggle />
+
+      <FilePicker
+        dir
+        label="Download Folder"
+        description="This is where the playlists/videos you download go"
+        value={userPreferences.download_directory}
+        onChange={handleChangeDownloadDir}
+      />
       <RadioGroup
         groupLabel="Window Size"
         items={windowSizeSelections}

@@ -114,6 +114,7 @@ fn main() {
       commands::get_user_audiodir,
       commands::resize_window,
       commands::set_dark_theme,
+      commands::set_download_directory,
       commands::hydrate,
       commands::get_yt_items,
       commands::insert_yt_item,

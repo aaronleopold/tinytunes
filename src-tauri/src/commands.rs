@@ -71,6 +71,27 @@ pub async fn insert_yt_item(name: String, yt_id: String, is_stream: bool) -> Res
 }
 
 #[tauri::command(async)]
+pub async fn update_yt_item(
+  id: i32,
+  name: String,
+  yt_id: String,
+  is_stream: bool,
+) -> Result<(), String> {
+  let db = db_instance().await.map_err(|e| e.to_string())?;
+
+  yt_item::Entity::update_many()
+    .filter(yt_item::Column::Id.eq(id))
+    .col_expr(yt_item::Column::Name, Expr::value(name))
+    .col_expr(yt_item::Column::YtId, Expr::value(yt_id))
+    .col_expr(yt_item::Column::IsStream, Expr::value(is_stream))
+    .exec(db)
+    .await
+    .map_err(|e| e.to_string())?;
+
+  Ok(())
+}
+
+#[tauri::command(async)]
 pub async fn delete_yt_item(id: i32) -> Result<(), String> {
   let db = db_instance().await.map_err(|e| e.to_string())?;
 

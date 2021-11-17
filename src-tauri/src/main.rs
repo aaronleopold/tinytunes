@@ -118,6 +118,7 @@ fn main() {
       commands::hydrate,
       commands::get_yt_items,
       commands::insert_yt_item,
+      commands::update_yt_item,
       commands::delete_yt_item,
       commands::download_yt_item
     ])

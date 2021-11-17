@@ -49,25 +49,41 @@ const EditItem: React.FC<EditItemProps> = ({ open, selected, onClose }) => {
     }
   }, [item]);
 
-  const persistEdit = async () => {
+  const persistEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (!item) return;
+
+    if (!name || !ytInput) return;
 
     const parsed = parseYoutubeUrl(ytInput);
 
     if (parsed) {
       const { is_stream, yt_id } = parsed;
-      await invoke('update_yt_item', { id: item.id, name, yt_id, is_stream })
-        // TODO: do something with the error
+
+      // no edits were made
+      if (name === item.name && yt_id === item.yt_id) {
+        return;
+      }
+
+      // I really hate how tauri assumes camelcase. I originally matched snake case
+      // but now I have to convert it to camel case.
+      await invoke('update_yt_item', {
+        id: item.id,
+        name,
+        ytId: yt_id,
+        isStream: is_stream
+      })
+        .then(() => {
+          // edit in store
+          item.setName(name);
+
+          onClose();
+        })
         .catch(err => console.log(err));
     } else {
       alert('TODO: did not work');
     }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    alert('TODO: persist edit');
-    onClose();
   };
 
   return (
@@ -76,7 +92,7 @@ const EditItem: React.FC<EditItemProps> = ({ open, selected, onClose }) => {
         <form
           id="add-yt-item-form"
           className="flex flex-col space-y-3"
-          onSubmit={handleSubmit}
+          onSubmit={persistEdit}
         >
           <Input
             fullWidth

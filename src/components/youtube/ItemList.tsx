@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { ContextMenuTrigger } from 'react-contextmenu';
@@ -61,6 +61,7 @@ const ItemList = observer(() => {
   const selectedRef = useRef(selected);
 
   const [editing, setEditing] = useState<boolean>(false);
+  const editingRef = useRef(editing);
 
   // confusing name convention but this will traverse up while decrementing
   // the position down
@@ -144,9 +145,13 @@ const ItemList = observer(() => {
     selectedRef.current = selected;
   }, [selected]);
 
+  useEffect(() => {
+    editingRef.current = editing;
+  }, [editing]);
+
   useKeyboardHandler([
     { key: 'Escape', callback: () => setSelected(null) },
-    { key: 'Enter', callback: goTo },
+    { key: 'Enter', callback: goTo, kill: () => editingRef.current },
     { key: 'e', modifier: 'metaKey', callback: handleEditItem },
     { key: 'd', modifier: 'metaKey', callback: handleDownloadItem },
     { key: 'ArrowUp', callback: traverseUp },

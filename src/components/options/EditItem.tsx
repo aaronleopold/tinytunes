@@ -56,6 +56,8 @@ const EditItem: React.FC<EditItemProps> = ({ open, selected, onClose }) => {
 
     if (!name || !ytInput) return;
 
+    on();
+
     const parsed = parseYoutubeUrl(ytInput);
 
     if (parsed) {
@@ -63,6 +65,7 @@ const EditItem: React.FC<EditItemProps> = ({ open, selected, onClose }) => {
 
       // no edits were made
       if (name === item.name && yt_id === item.yt_id) {
+        off();
         return;
       }
 
@@ -84,6 +87,8 @@ const EditItem: React.FC<EditItemProps> = ({ open, selected, onClose }) => {
     } else {
       alert('TODO: did not work');
     }
+
+    off();
   };
 
   return (

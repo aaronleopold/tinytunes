@@ -10,9 +10,12 @@ import {
 } from 'phosphor-react';
 import Button from '../ui/Button';
 import useKeyboardHandler from '../../hooks/useKeyboardHandler';
+import { observer } from 'mobx-react-lite';
+import { useMst } from '../../store/store';
 
 interface DropdownItemProps {
   label: string;
+  selected: boolean;
   icon?: React.FC<React.ComponentProps<'svg'>>;
   onClick(): void;
 }
@@ -27,17 +30,19 @@ export type DropdownItemGroup = IDropdownItem[];
 const items: DropdownItemGroup[] = [
   [
     { label: 'Playlist', value: 'playlist', icon: Playlist },
-    { label: 'Video', value: 'video', icon: MonitorPlay }
-  ],
-  [
-    { label: 'Name', value: 'name', icon: TextAa },
-    // default order in DB so no sorting required
-    { label: 'Date added', value: 'none', icon: Clock }
+    { label: 'Video', value: 'video', icon: MonitorPlay },
+    { label: 'Name', value: 'name', icon: TextAa }
   ]
+  // [
+  //   { label: 'Name', value: 'name', icon: TextAa }
+  //   // default order in DB so no sorting required
+  //   // { label: 'Date added', value: 'none', icon: Clock }
+  // ]
 ];
 
 const DropdownItem: React.FC<DropdownItemProps> = ({
   label,
+  selected,
   onClick,
   ...props
 }) => {
@@ -50,7 +55,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
             'w-full group flex items-center px-2 py-1 text-sm',
             {
               'bg-gray-100 dark:bg-trout-600 text-gray-900 dark:text-gray-50':
-                active
+                active || selected
             },
             { 'text-gray-700 dark:text-gray-50': !active }
           )}
@@ -67,15 +72,25 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
 
 // TODO: this config should be persisted so the user doesn't have to re-select
 // each application launch
-export default function SortingConfig() {
+function SortingConfig() {
+  const store = useMst();
+
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const onItemClick = (item: IDropdownItem) => {
-    console.log(item);
+    store.setSortBy(item.value);
   };
 
   const openMenu = () => {
     buttonRef.current?.click();
+  };
+
+  const isSelected = (value: string) => {
+    if (store.sortBy.includes('name') && value.includes('name')) {
+      return true;
+    } else {
+      return value === store.sortBy;
+    }
   };
 
   useKeyboardHandler([
@@ -115,6 +130,7 @@ export default function SortingConfig() {
               {group.map((item, j) => (
                 <DropdownItem
                   key={`item-group-${i}-dropdown-item-${j}`}
+                  selected={isSelected(item.value)}
                   {...item}
                   onClick={() => onItemClick(item)}
                 />
@@ -126,3 +142,5 @@ export default function SortingConfig() {
     </Menu>
   );
 }
+
+export default observer(SortingConfig);

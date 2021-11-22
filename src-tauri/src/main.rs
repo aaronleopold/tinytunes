@@ -95,6 +95,7 @@ fn main() {
         } else {
           println!("showing window");
           window.show().unwrap();
+          window.set_focus().unwrap();
         }
       }
       SystemTrayEvent::RightClick {

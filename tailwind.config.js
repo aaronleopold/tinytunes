@@ -3,13 +3,14 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   mode: 'jit',
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './index.html'],
-  darkMode: 'class', 
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans]
       },
       colors: {
+        brand: defaultTheme.colors.blue,
         trout: {
           DEFAULT: '#505468',
           50: '#F9FAFB',

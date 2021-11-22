@@ -14,7 +14,7 @@ const Player = types
     videoUrl: types.optional(types.string, ''),
     videoId: types.optional(types.string, ''),
     duration: types.optional(types.number, 0),
-    volume: types.optional(types.number, 1),
+    volume: types.optional(types.number, 0.5),
     muted: types.optional(types.boolean, false)
   })
   .actions(self => ({

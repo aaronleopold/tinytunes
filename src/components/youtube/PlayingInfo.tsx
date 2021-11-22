@@ -14,7 +14,7 @@ const PlayingInfo: React.FC<PlayingInfoProps> = ({
 }) => {
   return (
     <div className="absolute inset-0 mt-6 flex flex-col space-y-2 text-center z-50">
-      <Heading className="select-text" variant="player">
+      <Heading className="select-text px-2" variant="player">
         {title}
       </Heading>
     </div>

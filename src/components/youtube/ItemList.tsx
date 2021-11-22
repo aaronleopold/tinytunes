@@ -37,7 +37,7 @@ const Item: React.FC<ItemProps> = ({
           even
             ? 'bg-gray-50 dark:bg-trout-900'
             : 'bg-gray-100 dark:bg-trout-800',
-          { 'border-blue-500': selected },
+          { 'border-brand-500': selected },
           { 'border-transparent': !selected },
           'p-2 rounded-md border'
         )}

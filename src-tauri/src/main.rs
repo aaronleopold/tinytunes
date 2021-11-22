@@ -17,6 +17,7 @@ use tauri::{
   SystemTrayMenu, SystemTrayMenuItem,
 };
 
+// TODO: https://github.com/JonasKruckenberg/tauri-plugin-positioner
 fn main() {
   env_logger::builder()
     .filter_level(log::LevelFilter::Debug)

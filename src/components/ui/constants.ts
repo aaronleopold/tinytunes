@@ -3,9 +3,9 @@ focus:outline-none
 
 focus:ring-2 
 focus:ring-offset-2
-focus:ring-blue-500
+focus:ring-brand-500
 
-dark:focus:ring-blue-500
+dark:focus:ring-brand-500
 dark:ring-offset-trout-900
 `;
 
@@ -36,27 +36,27 @@ export const BUTTON_VARIANTS = {
     dark:active:text-white
   `,
   primary: `
-    bg-blue-500
-    border-blue-400
+    bg-brand-500
+    border-brand-400
     text-gray-50
    
-    hover:bg-blue-600
-    hover:border-blue-500
+    hover:bg-brand-600
+    hover:border-brand-500
     
-    dark:bg-blue-700
-    dark:border-blue-600
+    dark:bg-brand-700
+    dark:border-brand-600
 
-    dark:hover:bg-blue-600
-    dark:hover:border-blue-400
+    dark:hover:bg-brand-600
+    dark:hover:border-brand-400
   `,
   // FIXME?
   secondary: `
-    bg-blue-100
-    border-blue-50
-    text-blue-700
+    bg-brand-100
+    border-brand-50
+    text-brand-700
 
-    hover:bg-blue-200
-    hover:border-blue-100
+    hover:bg-brand-200
+    hover:border-brand-100
   `,
 
   tiny: `

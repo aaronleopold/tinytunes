@@ -38,7 +38,7 @@ export default function ({
             className={({ checked }) =>
               clsx(
                 checked
-                  ? 'border-transparent ring-2 dark:ring-blue-700 ring-blue-500 z-10'
+                  ? 'border-transparent ring-2 dark:ring-brand-700 ring-brand-500 z-10'
                   : 'border-gray-200 dark:border-trout-700',
                 'bg-white dark:bg-trout-800 rounded-md relative border p-4 flex cursor-pointer focus:outline-none'
               )
@@ -49,10 +49,10 @@ export default function ({
                 <span
                   className={clsx(
                     checked
-                      ? 'bg-blue-500 border-transparent'
+                      ? 'bg-brand-500 border-transparent'
                       : 'bg-white border-gray-300 dark:bg-trout-800 dark:border-trout-400',
                     active
-                      ? 'ring-2 ring-offset-2 dark:ring-offset-blue-300 ring-blue-400 '
+                      ? 'ring-2 ring-offset-2 dark:ring-offset-brand-300 ring-brand-400 '
                       : '',
                     'h-4 w-4 mt-0.5 cursor-pointer rounded-full border flex items-center justify-center'
                   )}
@@ -61,7 +61,7 @@ export default function ({
                   <span
                     className={clsx(
                       checked
-                        ? 'bg-blue-100 dark:bg-blue-300'
+                        ? 'bg-brand-100 dark:bg-brand-300'
                         : 'bg-white dark:bg-trout-800',
                       'rounded-full w-1.5 h-1.5'
                     )}
@@ -72,7 +72,7 @@ export default function ({
                     as="span"
                     className={clsx(
                       checked
-                        ? 'text-blue-800 dark:text-blue-50'
+                        ? 'text-brand-800 dark:text-brand-50'
                         : 'text-gray-900 dark:text-gray-50',
                       'block text-sm font-medium'
                     )}
@@ -85,7 +85,7 @@ export default function ({
                       as="span"
                       className={clsx(
                         checked
-                          ? 'text-blue-600 dark:text-blue-200'
+                          ? 'text-brand-600 dark:text-brand-200'
                           : 'text-gray-500 dark:text-gray-400',
                         'block text-sm'
                       )}

@@ -24,7 +24,7 @@ export default function ({
         checked={enabled}
         onChange={setEnabled}
         className={clsx(
-          enabled ? 'bg-blue-600' : 'bg-gray-200',
+          enabled ? 'bg-brand-600' : 'bg-gray-200',
           'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-orange-400'
         )}
       >
@@ -43,7 +43,7 @@ export default function ({
             )}
             aria-hidden="true"
           >
-            <Sun className="h-3 w-3 text-gray-400" />
+            <Sun className="h-3 w-3 text-gray-500" />
           </span>
           <span
             className={clsx(
@@ -54,7 +54,7 @@ export default function ({
             )}
             aria-hidden="true"
           >
-            <Moon className="h-3 w-3" />
+            <Moon className="h-3 w-3 text-brand-800" />
           </span>
         </span>
       </Switch>

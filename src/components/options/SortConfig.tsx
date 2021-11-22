@@ -1,13 +1,7 @@
 import React, { Fragment, useRef } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import clsx from 'clsx';
-import {
-  Clock,
-  MonitorPlay,
-  Playlist,
-  SortAscending,
-  TextAa
-} from 'phosphor-react';
+import { MonitorPlay, Playlist, SortAscending, TextAa } from 'phosphor-react';
 import Button from '../ui/Button';
 import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import { observer } from 'mobx-react-lite';

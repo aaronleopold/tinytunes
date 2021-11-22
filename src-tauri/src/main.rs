@@ -6,6 +6,7 @@
 mod app;
 mod commands;
 mod db;
+mod local_media;
 mod youtube;
 
 use app::menu;

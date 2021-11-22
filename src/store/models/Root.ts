@@ -6,6 +6,11 @@ import Player from './Player';
 import { Preferences } from './Preferences';
 import { YouTubeItem } from './YouTube';
 
+export enum MediaType {
+  YOUTUBE = 'YOUTUBE',
+  LOCAL = 'LOCAL'
+}
+
 export const RootModel = types
   .model({
     items: types.optional(types.array(YouTubeItem), []),
@@ -14,6 +19,10 @@ export const RootModel = types
       Preferences.create({ width: 400, height: 500, dark_theme: true })
     ),
     playerInfo: types.optional(Player, () => Player.create({})),
+    mediaType: types.optional(
+      types.enumeration(Object.keys(MediaType)),
+      MediaType.YOUTUBE
+    ),
     downloadInfo: types.optional(Downloader, () => Downloader.create({}))
   })
   .actions(self => ({
@@ -35,6 +44,9 @@ export const RootModel = types
       );
 
       self.sort();
+    },
+    setMediaType(mediaType: MediaType) {
+      self.mediaType = mediaType;
     },
     setSortBy(sortBy: string) {
       if (self.sortBy === sortBy && sortBy === 'name') {

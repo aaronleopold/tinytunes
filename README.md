@@ -55,8 +55,6 @@ Some of these are current limitations of Tauri, which are either current bugs of
 ## To-do
 
 - [ ] track navigation history manually for nav buttons :/
-- [ ] sortable list
-  - [ ] persist sort order
 - [ ] allow user to download playlists/videos (using youtube-dl, ffmpeg, etc)
   - [x] basic downloading
   - [ ] prevent doubly downloading (i.e. if I am downloading something, I probably don't want the user to be able to download another??)

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { ContextMenuTrigger } from 'react-contextmenu';
-import { useNavigate } from 'react-router';
 
 import { YouTubeItem } from '../../@types/store';
 import useKeyboardHandler from '../../hooks/useKeyboardHandler';
@@ -12,6 +11,7 @@ import Text, { SubText } from '../ui/Text';
 import EmptyListMessage from './EmptyListMessage';
 import EditItem from '../options/EditItem';
 import { invoke } from '@tauri-apps/api';
+import useNavigate from '../../hooks/useNavigate';
 
 interface ItemProps extends YouTubeItem {
   onClick: React.MouseEventHandler<HTMLDivElement>;
@@ -54,7 +54,7 @@ const Item: React.FC<ItemProps> = ({
 
 // TODO: is it worth virtualizing this?
 const ItemList = observer(() => {
-  const navigate = useNavigate();
+  const { navigate } = useNavigate();
   const { items, userPreferences, downloadInfo } = useMst();
 
   const [selected, setSelected] = useState<number | null>(null);

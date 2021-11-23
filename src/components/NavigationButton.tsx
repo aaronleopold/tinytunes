@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import useNavigate from '../hooks/useNavigate';
 import Button, { ButtonProps } from './ui/Button';
 
 interface NavigationButtonProps extends Omit<ButtonProps, 'onClick' | 'ref'> {
@@ -10,7 +10,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
   to,
   ...props
 }) => {
-  const navigate = useNavigate();
+  const { navigate } = useNavigate();
 
   const handleNavigate = () => {
     navigate(to);

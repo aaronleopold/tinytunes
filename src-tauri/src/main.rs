@@ -4,7 +4,6 @@
 )]
 
 mod app;
-mod commands;
 mod db;
 mod local_media;
 mod youtube;
@@ -114,16 +113,17 @@ fn main() {
       }
     })
     .invoke_handler(tauri::generate_handler![
-      commands::get_user_audiodir,
-      commands::resize_window,
-      commands::set_dark_theme,
-      commands::set_download_directory,
-      commands::hydrate,
-      commands::get_yt_items,
-      commands::insert_yt_item,
-      commands::update_yt_item,
-      commands::delete_yt_item,
-      commands::download_yt_item
+      youtube::commands::get_user_audiodir,
+      youtube::commands::resize_window,
+      youtube::commands::set_dark_theme,
+      youtube::commands::set_download_directory,
+      youtube::commands::hydrate,
+      youtube::commands::get_yt_items,
+      youtube::commands::insert_yt_item,
+      youtube::commands::update_yt_item,
+      youtube::commands::delete_yt_item,
+      youtube::commands::download_yt_item,
+      local_media::commands::get_local_media,
     ])
     .menu(menu::get_menu())
     .run(context)

@@ -1,33 +1,14 @@
-use crate::db::{self, entities::preferences, entities::yt_item};
-use crate::youtube::ytdl;
+use crate::{
+  db::{
+    connection::db_instance,
+    entities::{preferences, yt_item},
+  },
+  youtube::ytdl,
+};
 use anyhow::Result;
-use once_cell::sync::OnceCell;
-use sea_orm::{
-  sea_query::Expr, ColumnTrait, DatabaseConnection, EntityTrait, Order, QueryFilter, QueryOrder,
-  Set,
-};
-// use std::{
-//   io::{BufRead, BufReader},
-//   process::{ChildStdout, Command, Stdio},
-// };
+use sea_orm::{sea_query::Expr, ColumnTrait, EntityTrait, Order, QueryFilter, QueryOrder, Set};
 
-use tauri::window;
-use tauri::{
-  api::process::{Command, CommandEvent},
-  LogicalSize, Manager,
-};
-
-pub static DB_INSTANCE: OnceCell<DatabaseConnection> = OnceCell::new();
-
-async fn db_instance() -> Result<&'static DatabaseConnection> {
-  if DB_INSTANCE.get().is_none() {
-    let db = db::connection::get_connection().await?;
-    DB_INSTANCE.set(db).unwrap_or_default();
-    Ok(DB_INSTANCE.get().unwrap())
-  } else {
-    Ok(DB_INSTANCE.get().unwrap())
-  }
-}
+use tauri::{api::process::CommandEvent, LogicalSize, Manager};
 
 #[tauri::command]
 pub fn resize_window(window: tauri::Window, width: f64, height: f64) {

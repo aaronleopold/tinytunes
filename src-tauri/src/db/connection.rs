@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
+use once_cell::sync::OnceCell;
 use sea_orm::{
   sea_query::Expr, ColumnTrait, ConnectionTrait, Database, DatabaseBackend, DatabaseConnection,
   EntityTrait, QueryFilter, Statement,
@@ -8,6 +9,8 @@ use sea_orm::{
 use std::io::Read;
 
 use super::entities::preferences;
+
+pub static DB_INSTANCE: OnceCell<DatabaseConnection> = OnceCell::new();
 
 fn create_app_folder() -> Result<PathBuf> {
   let home_dir = dirs::home_dir().ok_or(anyhow::anyhow!("Could not find home directory"))?;
@@ -59,7 +62,7 @@ pub fn read_migration_up(migrations_folder: PathBuf) -> Result<String> {
   Ok(contents)
 }
 
-pub async fn get_connection() -> Result<DatabaseConnection> {
+pub async fn create_connection() -> Result<DatabaseConnection> {
   let db_file = create_db_file()?;
 
   Ok(Database::connect(db_file).await?)
@@ -85,4 +88,14 @@ pub async fn create_db(migrations_folder: PathBuf) -> Result<DatabaseConnection>
   }
 
   Ok(connection)
+}
+
+pub async fn db_instance() -> Result<&'static DatabaseConnection> {
+  if DB_INSTANCE.get().is_none() {
+    let db = create_connection().await?;
+    DB_INSTANCE.set(db).unwrap_or_default();
+    Ok(DB_INSTANCE.get().unwrap())
+  } else {
+    Ok(DB_INSTANCE.get().unwrap())
+  }
 }

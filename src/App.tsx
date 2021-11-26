@@ -9,7 +9,7 @@ export default function App() {
   return (
     <Provider>
       <Theme>
-        <MemoryRouter>
+        <MemoryRouter initialEntries={['/youtube']}>
           <Layout>
             <Routes />
           </Layout>

@@ -22,6 +22,14 @@ export default function useNavigate() {
     return backwardRef.current?.hasStuffs();
   };
 
+  const isNextRoute = (route: string) => {
+    return canGoForward() && forwardRef.current.peek() === route;
+  };
+
+  const isPrevRoute = (route: string) => {
+    return canGoBack() && backwardRef.current.peek() === route;
+  };
+
   const navigate = (path: string) => {
     // navigating somewhere removes the forward history
     if (forwardRef.current.hasStuffs()) {
@@ -73,6 +81,8 @@ export default function useNavigate() {
     navigate,
     canGoForward,
     canGoBack,
+    isNextRoute,
+    isPrevRoute,
     goForward,
     goBack
   };

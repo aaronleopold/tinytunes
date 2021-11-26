@@ -1,18 +1,18 @@
 import React from 'react';
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
+import Home from './Home';
 
-const Home = React.lazy(() => import('../pages/Home'));
-const Settings = React.lazy(() => import('../pages/Settings'));
-const Play = React.lazy(() => import('../pages/Play'));
+const Settings = React.lazy(() => import('./Settings'));
+const YouTubePlay = React.lazy(() => import('./YouTubePlay'));
+const LocalMediaPlay = React.lazy(() => import('./LocalMediaPlay'));
 
-const Routes: React.FC = () => {
+export default function Routes() {
   return (
     <RouterRoutes>
-      <Route path="/" element={<Home />} />
       <Route path="/settings" element={<Settings />} />
-      <Route path="/play/:index" element={<Play />} />
+      <Route path="/youtube/play/:index" element={<YouTubePlay />} />
+      <Route path="/local/play/:name" element={<LocalMediaPlay />} />
+      <Route path="/*" element={<Home />} />
     </RouterRoutes>
   );
-};
-
-export default Routes;
+}

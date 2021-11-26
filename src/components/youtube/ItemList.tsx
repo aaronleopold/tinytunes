@@ -99,9 +99,9 @@ const ItemList = observer(() => {
 
   const goTo = (index?: number) => {
     if (index !== undefined) {
-      navigate(`/play/${index}`);
+      navigate(`play/${index}`);
     } else if (selectedRef.current !== null) {
-      navigate(`/play/${selectedRef.current}`);
+      navigate(`play/${selectedRef.current}`);
     }
   };
 

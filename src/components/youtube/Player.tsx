@@ -10,17 +10,11 @@ import useKeyboardHandler from '../../hooks/useKeyboardHandler';
 import { useMst } from '../../store/store';
 import Loader from '../ui/Loader';
 import Controls from './controls/Controls';
-import getRandomGif from './gifs';
+import getRandomGif from '../../utils/gifs';
 import PlayingInfo from './PlayingInfo';
 
 interface PlayerProps {
   index: number;
-}
-
-interface CurrentlyPlaying {
-  title: string;
-  videoUrl: string;
-  videoId: string;
 }
 
 // TODO: remove these logs, keeping for now to make sure I'm not rerendering too much

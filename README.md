@@ -54,7 +54,7 @@ Some of these are current limitations of Tauri, which are either current bugs of
 
 ## To-do
 
-- [ ] track navigation history manually for nav buttons :/
+- [ ] Figure out weirdly large bundle size?? It's by no means \~big\~ but for a tauri app it's rather large
 - [ ] allow user to download playlists/videos (using youtube-dl, ffmpeg, etc)
   - [x] basic downloading
   - [ ] prevent doubly downloading (i.e. if I am downloading something, I probably don't want the user to be able to download another??)

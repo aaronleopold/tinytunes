@@ -4,7 +4,7 @@ import SortConfig from './SortConfig';
 
 const ListOptions: React.FC = () => {
   return (
-    <div className="flex space-x-2 mb-3 justify-end">
+    <div className="flex items-center space-x-2">
       <AddItem />
       <SortConfig />
     </div>

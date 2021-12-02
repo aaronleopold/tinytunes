@@ -1,5 +1,9 @@
 import { types } from 'mobx-state-tree';
 
+export enum PlayerType {
+  YOUTUBE = 'YOUTUBE',
+  LOCAL = 'LOCAL'
+}
 interface SetInfo {
   title: string;
   videoUrl: string;
@@ -9,6 +13,10 @@ interface SetInfo {
 
 const Player = types
   .model({
+    type: types.optional(
+      types.enumeration(Object.keys(PlayerType)),
+      PlayerType.YOUTUBE
+    ),
     isPlaying: types.optional(types.boolean, false),
     title: types.optional(types.string, ''),
     videoUrl: types.optional(types.string, ''),
@@ -18,6 +26,9 @@ const Player = types
     muted: types.optional(types.boolean, false)
   })
   .actions(self => ({
+    setType(type: PlayerType) {
+      self.type = type;
+    },
     setIsPlaying(isPlaying: boolean) {
       self.isPlaying = isPlaying;
     },

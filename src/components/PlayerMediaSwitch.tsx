@@ -1,31 +1,29 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React, { useMemo } from 'react';
-import { useLocation } from 'react-router';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
 import useNavigate from '../hooks/useNavigate';
+import { PlayerType } from '../store/models/Player';
+import { useMst } from '../store/store';
 
 const tabs = [
-  { name: 'YouTube', value: 'youtube' },
-  { name: 'Local Media', value: 'local' }
+  { name: 'YouTube', value: PlayerType.YOUTUBE },
+  { name: 'Local Media', value: PlayerType.LOCAL }
 ];
-
-function isSelected(value: string, pathname: string) {
-  return value === pathname.split('/')[1];
-}
 
 function PlayerMediaSwitch() {
   const { navigate } = useNavigate();
-
-  const location = useLocation();
+  const { playerInfo } = useMst();
 
   const handleChangeTab = (item: typeof tabs[0]) => {
-    navigate(`/${item.value}`);
+    playerInfo.setType(item.value);
+    navigate(`/${item.value.toLowerCase()}`);
   };
 
   return (
     <nav className="flex space-x-3">
       {tabs.map((tab, i) => {
-        const selected = isSelected(tab.value, location.pathname);
+        const selected = tab.value === playerInfo.type;
 
         return (
           <button
@@ -53,4 +51,4 @@ function PlayerMediaSwitch() {
   );
 }
 
-export default PlayerMediaSwitch;
+export default observer(PlayerMediaSwitch);

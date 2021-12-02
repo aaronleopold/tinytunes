@@ -62,3 +62,11 @@ Some of these are current limitations of Tauri, which are either current bugs of
   - [x] capture thread close event?
   - [ ] actually do something with the emitted events from tauri (maybe a toolbar or something that has percentage downloaded??)
 - [ ] allow media controls? (e.g. double click headset play to skip)
+- [ ] local media playback (e.g. play local files)
+  - [x] load default items from ~/Music
+  - [x] load nested dir when clicked
+    - [ ] show current path somewhere? breadcrumbs?
+  - [ ] play single file
+  - [ ] play current dir (i.e. play all audio files in current dir, non-recursive)
+  - [ ] allow hiding of dirs? maybe?
+- [ ] make toolbar show something different for local media playback

@@ -1,26 +1,11 @@
-use sea_orm::EntityTrait;
+use std::path::PathBuf;
 
-use crate::db::{connection::db_instance, entities::preferences};
-
-use super::file::get_local_music;
+use crate::local_media::file;
 
 #[tauri::command(async)]
-pub async fn get_local_media() -> Result<i32, String> {
-  let db = db_instance().await.map_err(|e| e.to_string())?;
+pub async fn get_local_media(base_dir: String) -> Result<Vec<file::Entry>, String> {
+  let path = PathBuf::from(&base_dir);
+  let entries = file::read_dir(&path).map_err(|e| e.to_string())?;
 
-  let preferences = preferences::Entity::find()
-    .one(db)
-    .await
-    .map_err(|e| e.to_string())?
-    .unwrap();
-
-  let dir = preferences.download_directory;
-
-  if let Some(dir) = dir {
-    let local_music = get_local_music(dir);
-  } else {
-    return Err("Could not find default download directory".to_owned());
-  }
-
-  Ok(0)
+  Ok(entries)
 }

@@ -1,6 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { useLocation, useNavigate as useNaviateNative } from 'react-router';
+import {
+  NavigateOptions,
+  useLocation,
+  useNavigate as useNaviateNative
+} from 'react-router';
 import Stack from '../lib/Stack';
+
+// TODO: refactor to store state (if present?)
 
 // it is truly amazing how many problems can be solved with two stacks lol
 const forwardHistory = new Stack<string>();
@@ -30,7 +36,7 @@ export default function useNavigate() {
     return canGoBack() && backwardRef.current.peek() === route;
   };
 
-  const navigate = (path: string) => {
+  const navigate = (path: string, options?: NavigateOptions) => {
     // navigating somewhere removes the forward history
     if (forwardRef.current.hasStuffs()) {
       forwardHistory.clear();
@@ -38,7 +44,7 @@ export default function useNavigate() {
 
     // store current before navigating
     backwardHistory.push(location.pathname);
-    navigateTo(path);
+    navigateTo(path, options);
   };
 
   const goForward = () => {
@@ -57,8 +63,6 @@ export default function useNavigate() {
   const goBack = () => {
     if (canGoBack()) {
       const next = backwardRef.current?.peek();
-
-      console.log(next);
 
       if (next) {
         backwardHistory.pop();

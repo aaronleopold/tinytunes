@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
   NavigateOptions,
   useLocation,
@@ -6,11 +6,15 @@ import {
 } from 'react-router';
 import Stack from '../lib/Stack';
 
-// TODO: refactor to store state (if present?)
+interface Location {
+  pathname: string;
+  state?: any;
+}
 
 // it is truly amazing how many problems can be solved with two stacks lol
-const forwardHistory = new Stack<string>();
-const backwardHistory = new Stack<string>();
+// const forwardHistory = new Stack<string>();
+const forwardHistory = new Stack<Location>();
+const backwardHistory = new Stack<Location>();
 
 // TODO: should I try and optimize this somehow? look into this
 export default function useNavigate() {
@@ -19,6 +23,13 @@ export default function useNavigate() {
 
   const navigateTo = useNaviateNative();
   const location = useLocation();
+
+  const getCurrentLocation = useCallback(() => {
+    return {
+      pathname: location.pathname,
+      state: location.state
+    };
+  }, [location.pathname]);
 
   const canGoForward = () => {
     return forwardRef.current.hasStuffs();
@@ -29,11 +40,11 @@ export default function useNavigate() {
   };
 
   const isNextRoute = (route: string) => {
-    return canGoForward() && forwardRef.current.peek() === route;
+    return canGoForward() && forwardRef.current.peek()?.pathname === route;
   };
 
   const isPrevRoute = (route: string) => {
-    return canGoBack() && backwardRef.current.peek() === route;
+    return canGoBack() && backwardRef.current.peek()?.pathname === route;
   };
 
   const navigate = (path: string, options?: NavigateOptions) => {
@@ -43,7 +54,8 @@ export default function useNavigate() {
     }
 
     // store current before navigating
-    backwardHistory.push(location.pathname);
+    backwardHistory.push(getCurrentLocation());
+
     navigateTo(path, options);
   };
 
@@ -54,8 +66,12 @@ export default function useNavigate() {
       if (next && backwardRef.current) {
         forwardHistory.pop();
         // store current before navigating
-        backwardHistory.push(location.pathname);
-        navigateTo(next);
+        backwardHistory.push(getCurrentLocation());
+
+        const options = next.state ? { state: next.state } : undefined;
+
+        // console.log('goForward', next.pathname, options);
+        navigateTo(next.pathname, options);
       }
     }
   };
@@ -67,8 +83,14 @@ export default function useNavigate() {
       if (next) {
         backwardHistory.pop();
         // store current before navigating
-        forwardHistory.push(location.pathname);
-        navigateTo(next);
+        forwardHistory.push({
+          pathname: location.pathname,
+          state: location.state
+        });
+
+        const options = next.state ? { state: next.state } : undefined;
+        // console.log('goBack', next.pathname, options);
+        navigateTo(next.pathname, options);
       }
     }
   };

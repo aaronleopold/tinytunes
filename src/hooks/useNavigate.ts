@@ -12,7 +12,6 @@ interface Location {
 }
 
 // it is truly amazing how many problems can be solved with two stacks lol
-// const forwardHistory = new Stack<string>();
 const forwardHistory = new Stack<Location>();
 const backwardHistory = new Stack<Location>();
 

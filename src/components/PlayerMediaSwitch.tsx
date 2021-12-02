@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router';
 import useNavigate from '../hooks/useNavigate';
 import { PlayerType } from '../store/models/Player';
 import { useMst } from '../store/store';
@@ -15,10 +16,26 @@ function PlayerMediaSwitch() {
   const { navigate } = useNavigate();
   const { playerInfo } = useMst();
 
+  const location = useLocation();
+
   const handleChangeTab = (item: typeof tabs[0]) => {
-    playerInfo.setType(item.value);
     navigate(`/${item.value.toLowerCase()}`);
   };
+
+  // I didn't want to have to do this, but I didn't want to add this to the
+  // useNavigate hook so
+  useEffect(() => {
+    const current = playerInfo.type.toLowerCase();
+    const matches = location.pathname.split('/')[1] === current;
+
+    if (!matches) {
+      if (current === 'youtube') {
+        playerInfo.setType(PlayerType.LOCAL);
+      } else {
+        playerInfo.setType(PlayerType.YOUTUBE);
+      }
+    }
+  }, [location.pathname, playerInfo.type]);
 
   return (
     <nav className="flex space-x-3">
